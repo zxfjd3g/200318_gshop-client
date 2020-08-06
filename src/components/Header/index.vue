@@ -33,7 +33,8 @@
       </h1>
       <div class="searchArea">
         <form action="###" class="searchForm" @submit.prevent="toSearch">
-          <input type="text" id="autocomplete" class="input-error input-xxlarge" />
+          <input type="text" id="autocomplete" class="input-error input-xxlarge" 
+            v-model.trim="keyword"/>
           <!-- 
             有type="button": 点击的没有点击提交表单的默认行为, 不需要加.prevent
             没有type="button", 是提交按钮, 点击的默认行为是提交表单, 需要加.prevent
@@ -53,10 +54,32 @@
   export default {
     name: 'Header',
 
+    data () {
+      return {
+        keyword: ''
+      }
+    },
+
     methods: {
       toSearch () {
         // 编程式路由导航/跳转
-        this.$router.push('/search')
+        // location为字符串
+        // this.$router.push(`/search?keyword2=${this.keyword.toUpperCase()}`)
+        // this.$router.push(`/search/${this.keyword}?keyword2=${this.keyword.toUpperCase()}`)
+        // location为对象
+        const location = {
+          // path: `/search/${this.keyword}?keyword2=${this.keyword.toUpperCase()}`
+          // path: '/search/:keyword'
+          // path: '/search',  // path与params配合使用
+          name: 'search',  // params与name配合使用
+          // params: {keyword: this.keyword}, // 一旦params参数是可传可不传, 就不能指定空串的值
+          query: {keyword2: this.keyword.toUpperCase()}
+        }
+        if (this.keyword!=='') { // 只有params参数值不为空串才携带
+          location.params = {keyword: this.keyword}
+        }
+
+        this.$router.push(location)
       }
     }
   }
