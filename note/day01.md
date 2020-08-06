@@ -91,3 +91,15 @@
 	    git checkout master
 	    git merge dev
 	    git push
+
+## Header组件
+	声明式路由导航/跳转
+	编程式路由导航/跳转
+	阻止表单提交的默认行为: .prevent
+	type="button": 点击不提交表单, 不用prevent
+
+
+## Footer组件
+	如何控制footer的显示/隐藏?
+		1). 通过读取请求的路由路径来判断
+      	2). 利用路由的meta

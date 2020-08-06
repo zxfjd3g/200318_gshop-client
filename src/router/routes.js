@@ -14,14 +14,20 @@ export default [
   },
   {
     path: '/search',
-    component: Search
+    component: Search,
   },
   {
     path: '/login',
-    component: Login
+    component: Login,
+    meta: {
+      isHideFooter: true // 是否隐藏footer的标识
+    }
   },
   {
     path: '/register',
-    component: Register
+    component: Register,
+    meta: {
+      isHideFooter: true // 是否隐藏footer的标识
+    }
   },
 ]
