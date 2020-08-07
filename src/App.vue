@@ -15,11 +15,17 @@
 // import router from './router'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import {reqCategoryList} from '@/api'
+
 export default {
   name: 'App',
 
-  beforeCreate() {
-    console.log(this.$router)
+  async mounted () {
+    /* reqCategoryList().then(result => {
+      console.log('result', result)
+    }) */
+    const result = await reqCategoryList()
+    console.log('result', result)
   },
 
   components: {

@@ -11,8 +11,11 @@ import axios from 'axios'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
+NProgress.configure({ showSpinner: false }) // 隐藏右侧的旋转进度条
+
 // 创建instance
 const instance = axios.create({
+  // baseURL: 'http://182.92.128.115/api',
   baseURL: '/api',
   timeout: 10000
 })
@@ -23,7 +26,7 @@ instance.interceptors.request.use(config => {
   NProgress.start()
 
   return config // 必须返回config
-})
+}) 
 
 
 // 指定响应拦截器
