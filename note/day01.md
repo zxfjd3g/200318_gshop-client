@@ -105,8 +105,8 @@
 		$route: 当前路由信息对象, 包含当前路由相关数据的对象: path/name/query/params/meta
 
 ## Header组件
-	声明式路由导航/跳转
-	编程式路由导航/跳转
+	声明式路由导航/跳转: <router-link to="/xxx" replace>
+	编程式路由导航/跳转: this.$router.push(location)/replace(location)
 	阻止表单提交的默认行为: .prevent
 	type="button": 点击不提交表单, 不用prevent
 
@@ -116,48 +116,46 @@
 		1). 通过读取请求的路由路径来判断
       	2). 利用路由的meta
 
-## 路由跳转与参数相关问题
-	2种路由跳转:
-		声明式: <router-link to="/xxx" replace>
-		编程式: this.$router.push(location)/replace(location)
-	location的2种类型值
-		字符串: push(path字符串)  '/home/2?name=tom'   将参数拼接到path中
-		对象:
-	2种参数
-		params参数:
-			路由路径: /search/:keyword
-			携带: /search/abc
-			读取: $route.params.keyword
-		query参数:
-			路由路径: /search
-			携带: /search?keyword2=cba
-			读取: $route.query.keyword2
+## 路由跳转参数问题:
+    1). 2种参数
+				/search/aa?categoryName=phone&category1Id=2
+        params参数: aa  注册路由时一定要带 '/search/:keyword'
+        query参数: categoryName=phone&category1Id=2
+    2). push(location)的2种语法
+        字符串: push(path) // path可以带参数(params或者query)数据
+        对象: push({}) // 也可以带参数
+    3). push({}) 携带参数的问题:
+        一旦有params参数, 必须有name配置, query参数没有此限制
+        this.$router.push({
+            name: 'search', 
+            // path: '/search/:keyword',
+            params: {keyword},
+            query: {keyword2: keyword.toUpperCase()}
+        })
+    4). 如何实现params参数可传可不传?
+        配置路由路径的params部分时用?: path: '/search/:keyword?'
+        只有params参数有值时, 才指定params配置(不要携带一个值为空串的params参数)
+    5). 当编程式跳转到当前路由且参数数据不变, 就会出警告错误:
+        错误: 
+            Avoided redundant navigation to current location  ==> 重复跳转路由
+        原因: 
+            vue-router3.1.0之后, 引入了push()的promise的语法, 如果没有通过参数指定回调函数就返回一个promise来指定成功/失败的回调, 且内部会判断如果要跳转的路径和参数都没有变化, 会抛出一个失败的promise
+        解决:
+            办法1: 在每次push时指定回调函数或catch错误
+            办法2: 重写VueRouter原型上的push方法 (比较好)
+                1. 如果没有指定回调函数, 需要调用原本的push()后catch()来处理错误的promise
+                2. 如果传入了回调函数, 本身就没问题, 直接调用原本的push()就可以
+    6). 将路由参数映射成props传递给路由组件对象
+        路由: props: route => ({keyword3: route.params.keyword, keyword4: route.query.keyword2})
+        组件读取: 接收props属性必须声明
+            props: ['keyword3', 'keyword4']
+            {{keyword3}} / this.keyword3
 
-## 路由跳转与传参相关问题
-	1).跳转路由的2种基本方式
-        声明式: <router-link to="">
-        编程式: this.$router.push()/replace()
-	
-	2).跳转路由携带参数的2种方式
-        params参数
-        query参数
-	
-	3).面试问题1: 
-		描述: 编程式路由跳转到当前路由(参数不变), 会抛出NavigationDuplicated的警告错误
-	    解决1: 在跳转时指定成功或失败的回调函数, 通过catch处理错误
-		解决2: 修正Vue原型上的push和replace方法 (优秀)
-	
-	4).面试问题2: 如何指定params参数可传可不传?
-		path: '/search/:keyword?'
-	
-	5).面试问题3: 指定params参数时可不可以用path和params配置的组合?
-		不可以用path和params配置的组合, 只能用name和params配置的组合
-		query配置可以与path或name进行组合使用
-	
-	6).面试问题4: 如果指定name与params配置, 但params中数据是一个"", 无法跳转
-	    解决1: 不指定params
-		解决2: 指定params参数值为undefined
-	
-	7).面试问题5: 路由组件能不能传递props数据?
-	    可以: 可以将query或且params参数映射/转换成props传递给路由组件对象
-		实现: props: (route)=>({keyword1:route.params.keyword, keyword2: route.query.keyword })
+    路由相关面试问题?
+        区别路由相关的2个对象:  $route 和 $router
+        路由跳转/导航的2种方式: 声明式 和 编程式 
+        路由跳转时携带的参数的2种类型: params 和 query
+        路由跳转时location的2种类型: 字符串 和 对象
+        路由跳转的params配置与path配置能不能一起使用?  不能, params只能与name配合
+        问题: 编程式跳转到当前路由且参数数据不变, 就会出警告错误
+            设计一个开发的经历: 前面做的vue没有这个问题, 后面做的项目就有这个问题
