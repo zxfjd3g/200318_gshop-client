@@ -15,7 +15,7 @@ const mutations = {
   接收保存分类列表
   */
   RECEIVE_CATEGORY_LIST (state, categoryList) { // state就是当前模块管理的state对象
-    state.categoryList = categoryList
+    state.categoryList = categoryList.splice(0, 15)
   }
 }
 
