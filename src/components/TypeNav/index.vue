@@ -409,8 +409,35 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 export default {
   name: 'TypeNav',
+
+  computed: {
+    
+    categoryList2 () {
+      return this.$store.state.home.categoryList
+    },
+
+    // ...{
+    //   categoryList () {
+    //     return this.$store.state.categoryList
+    //   },
+    // },
+
+    // ...mapState(['home.categoryList'])  // 不可以
+    ...mapState({
+      // categoryList: 'home.categoryList' // 不可以
+       // 用来指定计算属性值的回调函数, state是总状态
+      categoryList: state => state.home.categoryList,
+    })
+  },
+
+  mounted () {
+    // 通过dispatch来触发对应的action调用  ==> 从后台获取分类列表到vuex中
+    this.$store.dispatch('getCategoryList')
+  }
 }
 </script>
 

@@ -24,8 +24,8 @@ export default {
     /* reqCategoryList().then(result => {
       console.log('result', result)
     }) */
-    const result = await reqCategoryList()
-    console.log('result', result)
+    // const result = await reqCategoryList()
+    // console.log('result', result)
   },
 
   components: {
