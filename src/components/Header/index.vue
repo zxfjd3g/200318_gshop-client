@@ -79,6 +79,18 @@
           location.params = {keyword: this.keyword}
         }
 
+        // 办法1: 传入回调函数参数(使用老的语法, 不会产生promise)
+        // this.$router.push(location, () => {
+        //   console.log('跳转成功了')
+        // })
+        // this.$router.push(location, undefined, () => {
+
+        // })
+        // 方法2: catch错误 (使用新的语法, 有可能返回一个失败的promise)
+        // this.$router.push(location).catch((error) => {
+        //   // console.log('catch到错误', error)
+        // })
+
         this.$router.push(location)
       }
     }

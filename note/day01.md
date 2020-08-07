@@ -22,7 +22,16 @@
 ## 使用脚手架创建项目并运行
 	1). 使用vue-cli3/4
 	2). 开发环境运行
+			命令: npm run dev/serve
+				1.在内存中打包生成内存中的打包文件
+				2.启动服务器运行内存中的打包文件
 	3). 生产环境打包运行
+			命令1: npm run build
+				1.在内存中打包生成内存中的打包文件
+				2.生成本地打包文件
+			命令2: serve dist
+				1.将本地的打包文件加载到内存中
+				2.启动服务器运行内存中的打包文件
 
 ## 项目源码目录(主要说src下的)
 	|- api
@@ -105,7 +114,7 @@
 		$route: 当前路由信息对象, 包含当前路由相关数据的对象: path/name/query/params/meta
 
 ## Header组件
-	声明式路由导航/跳转: <router-link to="/xxx" replace>
+	声明式路由导航/跳转: <router-link :to="{name,path,params:{},query:{}}" replace>
 	编程式路由导航/跳转: this.$router.push(location)/replace(location)
 	阻止表单提交的默认行为: .prevent
 	type="button": 点击不提交表单, 不用prevent
@@ -118,7 +127,7 @@
 
 ## 路由跳转参数问题:
     1). 2种参数
-				/search/aa?categoryName=phone&category1Id=2
+		/search/aa?categoryName=phone&category1Id=2
         params参数: aa  注册路由时一定要带 '/search/:keyword'
         query参数: categoryName=phone&category1Id=2
     2). push(location)的2种语法
@@ -128,7 +137,7 @@
         一旦有params参数, 必须有name配置, query参数没有此限制
         this.$router.push({
             name: 'search', 
-            // path: '/search/:keyword',
+            // path: '/search/keyword',
             params: {keyword},
             query: {keyword2: keyword.toUpperCase()}
         })
@@ -143,8 +152,8 @@
         解决:
             办法1: 在每次push时指定回调函数或catch错误
             办法2: 重写VueRouter原型上的push方法 (比较好)
-                1. 如果没有指定回调函数, 需要调用原本的push()后catch()来处理错误的promise
-                2. 如果传入了回调函数, 本身就没问题, 直接调用原本的push()就可以
+                1). 如果没有指定回调函数, 需要调用原本的push()后catch()来处理错误的promise
+                2). 如果传入了回调函数, 本身就没问题, 直接调用原本的push()就可以
     6). 将路由参数映射成props传递给路由组件对象
         路由: props: route => ({keyword3: route.params.keyword, keyword4: route.query.keyword2})
         组件读取: 接收props属性必须声明
