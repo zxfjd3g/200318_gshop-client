@@ -46,6 +46,8 @@
 </template>
 
 <script>
+  // import _ from 'lodash' // 引入整个lodash ===> 打包整个lodash
+  import throttle from 'lodash/throttle' // 按需引入(只引入需要的函数) ==> 只打包引入使用的 ==> 减少了1.4M
   import {
     mapState
   } from 'vuex'
@@ -87,10 +89,13 @@
     methods: {
       /* 
       显示指定下标对应的子分类列表
+      使用lodash的throttle工具函数进行函数节流处理 ==> 减少更新
       */
-      showSubCategorys(index) {
+      // showSubCategorys: _.throttle(function (index) { 
+      showSubCategorys: throttle(function (index) { 
+        console.log(index)
         this.currentIndex = index
-      }
+      }, 200)
     }
   }
 </script>
