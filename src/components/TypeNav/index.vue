@@ -2,24 +2,30 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="currentIndex = -1">
+      <div @mouseleave="currentIndex = -2" @mouseenter="currentIndex=-1">
         <h2 class="all">全部商品分类</h2>
         <div class="sort">
-          <div class="all-sort-list2">
+          <div class="all-sort-list2" @click="toSearch">
             <div class="item" v-for="(c1, index) in categoryList" :key="c1.categoryId"
               :class="{item_on: index===currentIndex}" @mouseenter="showSubCategorys(index)">
               <h3>
-                <a href="">{{c1.categoryName}}</a>
+                <a href="javascript:" :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
+                <!-- <a href="javascript:" @click="$router.push(`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`)">{{c1.categoryName}}</a> -->
+                <!-- <router-link :to="`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`">{{c1.categoryName}}</router-link> -->
               </h3>
               <div class="item-list clearfix">
                 <div class="subitem">
                   <dl class="fore" v-for="(c2, index) in c1.categoryChild" :key="c2.categoryId">
                     <dt>
-                      <a href="">{{c2.categoryName}}</a>
+                      <a href="javascript:" :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
+                      <!-- <a href="javascript:" @click="$router.push(`/search?categoryName=${c2.categoryName}&category2Id=${c2.categoryId}`)">{{c2.categoryName}}</a> -->
+                      <!-- <router-link :to="`/search?categoryName=${c2.categoryName}&category2Id=${c2.categoryId}`">{{c2.categoryName}}</router-link> -->
                     </dt>
                     <dd>
                       <em v-for="(c3, index) in c2.categoryChild" :key="c3.categoryId">
-                        <a href="">{{c3.categoryName}}</a>
+                        <a href="javascript:" :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
+                        <!-- <a href="javascript:" @click="$router.push(`/search?categoryName=${c3.categoryName}&category3Id=${c3.categoryId}`)">{{c3.categoryName}}</a> -->
+                        <!-- <router-link :to="`/search?categoryName=${c3.categoryName}&category3Id=${c3.categoryId}`">{{c3.categoryName}}</router-link> -->
                       </em>
                     </dd>
                   </dl>
@@ -57,7 +63,7 @@
 
     data() {
       return {
-        currentIndex: -1
+        currentIndex: -2
       }
     },
 
@@ -93,9 +99,47 @@
       */
       // showSubCategorys: _.throttle(function (index) { 
       showSubCategorys: throttle(function (index) { 
+        // 如果已经移出了整个div, 不需要更新
+        if (this.currentIndex===-2) return
         console.log(index)
         this.currentIndex = index
-      }, 200)
+      }, 200),
+
+      /* 
+      跳转到Search路由
+      */
+      toSearch (event) {
+
+        const dataset = event.target.dataset  // 得到包含所有data处定义属性的对象
+        console.log(dataset)
+        const {categoryname, category1id, category2id, category3id} = dataset
+        // 如果categoryname没值, 点击的不是分类项, 直接结束
+        if (!categoryname) return
+
+        // 准备query参数对象
+        const query = {
+          categoryName: categoryname
+        }
+        if (category1id) {
+          query.category1Id = category1id
+        } else if (category2id) {
+          query.category2Id = category2id
+        } else if (category3id) {
+          query.category3Id = category3id
+        }
+
+        // 准备location对象
+        const location = {
+          name: 'search',
+          query
+        }
+
+        if (event.target.tagName.toUpperCase()==='A') {
+          this.$router.push(location)
+        }
+
+        
+      }
     }
   }
 </script>
