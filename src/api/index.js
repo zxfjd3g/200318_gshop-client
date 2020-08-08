@@ -3,6 +3,7 @@
 每个函数的返回值都是promise
 */
 import ajax from './ajax'
+import mockAjax from './mockAjax'
 
 /* 
 登陆
@@ -24,3 +25,7 @@ export function reqLogin ({mobile, password}) {
 */
 export const reqCategoryList = () => ajax('/product/getBaseCategoryList')
 // export const reqCategoryList = () => ajax.get('/product/getBaseCategoryList')
+
+// 定义mock接口的请求函数
+export const reqBanners = () => mockAjax('/banners')
+export const reqFloors = () => mockAjax('/floors')
