@@ -23,28 +23,74 @@ export default {
     carouselList: Array
   },
 
+  mounted (){
+    if (this.carouselList.length>0) {
+      new Swiper(this.$refs.swiper, {
+        // direction: 'vertical', // 垂直切换选项   默认就是horizontal
+        loop: true, // 循环模式选项
+        // 如果需要分页器
+        pagination: {
+          el: '.swiper-pagination',
+        },
+        // 如果需要前进后退按钮
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      }) 
+    }
+  },
+
   watch: {
 
       // 更新数据 => 立即同步调用监视的回调 ==> 异步更新界面
-      carouselList () { // banners更新了([] ==> [..])
-        // 需要在界面更新后创建swiper对象才会有正常轮播效果
-        // 利用nextTick()延迟到这次数据更新导致的界面更新后立即执行
-        this.$nextTick(() => {
-          new Swiper(this.$refs.swiper, {
-            // direction: 'vertical', // 垂直切换选项   默认就是horizontal
-            loop: true, // 循环模式选项
-            // 如果需要分页器
-            pagination: {
-              el: '.swiper-pagination',
-            },
-            // 如果需要前进后退按钮
-            navigation: {
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev',
-            },
-          }) 
-        })
-      }
+      // carouselList () { // banners更新了([] ==> [..])
+      //   console.log('-------', this.carouselList)
+      //   // 需要在界面更新后创建swiper对象才会有正常轮播效果
+      //   // 利用nextTick()延迟到这次数据更新导致的界面更新后立即执行
+      //   this.$nextTick(() => {
+      //     new Swiper(this.$refs.swiper, {
+      //       // direction: 'vertical', // 垂直切换选项   默认就是horizontal
+      //       loop: true, // 循环模式选项
+      //       // 如果需要分页器
+      //       pagination: {
+      //         el: '.swiper-pagination',
+      //       },
+      //       // 如果需要前进后退按钮
+      //       navigation: {
+      //         nextEl: '.swiper-button-next',
+      //         prevEl: '.swiper-button-prev',
+      //       },
+      //     }) 
+      //   })
+      // }
+
+      carouselList: {
+        handler: function carouselList () { // banners更新了([] ==> [..])
+          // 如果没, 直接结束(不需要创建swiper对象)
+          if (this.carouselList.length===0) return
+          console.log('-------', this.carouselList)
+
+          // 需要在界面更新后创建swiper对象才会有正常轮播效果
+          // 利用nextTick()延迟到这次数据更新导致的界面更新后立即执行
+          this.$nextTick(() => {
+            new Swiper(this.$refs.swiper, {
+              // direction: 'vertical', // 垂直切换选项   默认就是horizontal
+              loop: true, // 循环模式选项
+              // 如果需要分页器
+              pagination: {
+                el: '.swiper-pagination',
+              },
+              // 如果需要前进后退按钮
+              navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              },
+            }) 
+          })
+        },
+        immediate: true, // 组件对象创建初始化时就会执行第一次   / 默认只在变化后才会调用
+      },
     },
 }
 </script>

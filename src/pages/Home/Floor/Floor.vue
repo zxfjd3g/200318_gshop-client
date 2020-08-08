@@ -21,6 +21,7 @@
                 <img :src="floor.imgUrl" />
               </div>
               <div class="floorBanner">
+                <!-- 是有了数组数据后才创建Carousel的对象 -->
                 <Carousel :carouselList="floor.carouselList"/>
               </div>
               <div class="split">

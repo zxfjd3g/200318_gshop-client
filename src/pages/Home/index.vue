@@ -33,7 +33,7 @@
 
     computed: {
       ...mapState({
-        floors: state => state.home.floors,
+        floors: state => state.home.floors,  // [] ==> [{carouselList: []}, {}]
       })
     },
 
