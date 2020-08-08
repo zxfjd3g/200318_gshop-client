@@ -1,5 +1,7 @@
 <template>
   <div>
+    <type-nav/>
+    
     <h2>params: {{$route.params.keyword}}</h2>
     <h2>query: {{$route.query.keyword2}}</h2>
     <h2>params==>props: {{keyword3}}</h2>

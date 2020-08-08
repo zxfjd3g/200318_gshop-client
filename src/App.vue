@@ -26,6 +26,7 @@ export default {
     }) */
     // const result = await reqCategoryList()
     // console.log('result', result)
+    this.$store.dispatch('getCategoryList') //  切换/跳转路由时不会再次调用
   },
 
   components: {

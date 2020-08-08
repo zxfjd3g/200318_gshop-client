@@ -17,7 +17,7 @@ NProgress.configure({ showSpinner: false }) // 隐藏右侧的旋转进度条
 const instance = axios.create({
   // baseURL: 'http://182.92.128.115/api',
   baseURL: '/api',
-  timeout: 10000
+  timeout: 20000
 })
 
 // 指定请求拦截器

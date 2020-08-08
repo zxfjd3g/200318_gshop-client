@@ -61,7 +61,7 @@
     },
 
     methods: {
-      toSearch () {
+      toSearch_test () {
         // 编程式路由导航/跳转
         // location为字符串
         // this.$router.push(`/search?keyword2=${this.keyword.toUpperCase()}`)
@@ -90,6 +90,22 @@
         // this.$router.push(location).catch((error) => {
         //   // console.log('catch到错误', error)
         // })
+
+        this.$router.push(location)
+      },
+
+      toSearch () {
+
+        // 准备location对象
+        const location = {
+          name: 'search',
+          // 携带原本就有的query参数
+          query: this.$route.query
+        }
+        // 输入了才指定params参数
+        if (this.keyword!=='') {
+          location.params = {keyword: this.keyword}
+        }
 
         this.$router.push(location)
       }
