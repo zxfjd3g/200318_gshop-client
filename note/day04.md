@@ -12,7 +12,6 @@
 	vuex: search.js---state/mutations/actions/getters
 	component: dispatch() / mapState() / 模板显示
 
-
 ## 调试时查看动态数据的位置
 	vue: 组件---data/props/computed/vuex bindings
 	vuex: state/getters/mutation调用
@@ -80,7 +79,7 @@
 
 ## 根据属性进行搜索
 	属性数据的结构: props: [], // ["属性ID:属性值:属性名"] ["2:6.0～6.24英寸:屏幕尺寸"]
-	添加属性条件:		
+	添加属性条件:
 		子组件向父组件: 自定义事件
 		事件名: addProp
 		数据: "属性ID:属性值:属性名"
