@@ -13,20 +13,26 @@
           <ul class="fl sui-tag">
             <li class="with-x" v-if="options.categoryName" @click="deleteCategory">{{options.categoryName}}<i>×</i></li>
             <li class="with-x" v-if="options.keyword" @click="deleteKeyword">{{options.keyword}}<i>×</i></li>
+            <li class="with-x" v-if="options.trademark" @click="deleteTrademark">{{options.trademark}}<i>×</i></li>
             <li class="with-x" v-for="(prop, index) in options.props" :key="prop" @click="deleteProp(index)">{{prop}}<i>×</i></li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector :addProp="addProp" @addProp="addProp"/>
+        <SearchSelector :addProp="addProp" @addProp="addProp" @setTrademark="setTrademark"/>
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <!-- order: '1:desc', // 排序条件  1: 综合,2: 价格 asc: 升序,desc: 降序   1:desc -->
+                <li :class="{active: isActive('1')}"><!-- options.order.startsWith('1') -->
+                  <a href="javascript:" @click="setOrder('1')">
+                    综合
+                    <i class="iconfont" v-if="isActive('1')" 
+                      :class="iconClass"></i>
+                  </a>
                 </li>
                 <li>
                   <a href="#">销量</a>
@@ -37,11 +43,12 @@
                 <li>
                   <a href="#">评价</a>
                 </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active: isActive('2')}">
+                  <a href="javascript:" @click="setOrder('2')">
+                    价格
+                     <i class="iconfont" v-if="isActive('2')" 
+                      :class="iconClass"></i>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -76,35 +83,12 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination 
+            :currentPage="options.pageNo" 
+            :total="productList.total" 
+            :pageSize="options.pageSize"
+            :showPageNo="3"
+            @currentChange="handleCurrentChange"/>
         </div>
       </div>
     </div>
@@ -148,10 +132,59 @@
     computed: {
       ...mapState({
         productList: state => state.search.productList
-      })
+      }),
+
+      // 计算icon类名
+      iconClass () {
+        return this.options.order.split(':')[1]==='desc' ? 'icondown' : 'iconup'
+      }
+      
     },
 
     methods: {
+
+      /* 
+      是否选中
+      */
+      isActive (orderFlag) {
+        return this.options.order.startsWith(orderFlag)
+      },
+
+      /* 
+      设置排序条件
+      */
+      setOrder (orderFlag) { // '1' / '2'    1:desc
+        // 得到原本的order中的orderFlag, orderType
+        const [flag, type] = this.options.order.split(':')  // ['1', 'desc']
+        let orderType
+        // 点击的是当前排序项
+        if (orderFlag===flag) {
+          orderType = type==='desc' ? 'asc' : 'desc'
+        } else { // 不是当前排序项
+          orderType = 'desc'
+        }
+
+        // 更新order
+        this.options.order = `${orderFlag}:${orderType}`
+        this.getProductList()
+      },
+
+      /* 
+      删除品牌条件
+      */
+      deleteTrademark () {
+        this.options.trademark = ''
+        this.getProductList()
+      },
+
+      /* 
+      设置指定品牌
+      */
+      setTrademark (trademark) {  // 品牌ID:品牌名称
+        if (this.options.trademark===trademark) return
+        this.options.trademark = trademark
+        this.getProductList()
+      },
 
       /* 
       删除一个属性条件
@@ -237,10 +270,17 @@
       异步获取指定页码的商品列表显示
       */
       getProductList (page=1) {
-        // 更新page
-        this.page = page
+        // 更新pageNo
+        this.options.pageNo = page
         // 请求获取数据
         this.$store.dispatch('getProductList', this.options)
+      },
+
+      /* 
+      处理分页页码改变的监听回调
+      */
+      handleCurrentChange (page) {
+        this.getProductList(page)
       }
     },
 
