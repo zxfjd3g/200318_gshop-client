@@ -60,6 +60,13 @@
       }
     },
 
+    mounted () {
+      // 给总线绑定自定义事件监听clearKeyword
+      this.$bus.$on('clearKeyword', () => {
+        this.keyword = ''
+      })
+    },
+
     methods: {
       toSearch_test () {
         // 编程式路由导航/跳转
@@ -91,7 +98,16 @@
         //   // console.log('catch到错误', error)
         // })
 
-        this.$router.push(location)
+        
+
+        // 如果当前是搜索路由, 使用replace跳转, 否则用push
+        // if (this.$route.path.indexOf('/search')===0) {
+        // if (this.$route.path.startsWith('/search')) {
+        if (this.$route.name==='search') {
+          this.$router.replace(location)
+        } else {
+          this.$router.push(location)
+        }
       },
 
       toSearch () {

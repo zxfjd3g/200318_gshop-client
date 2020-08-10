@@ -15,8 +15,10 @@
     <div class="type-wrap" v-for="(attr, index) in attrsList" :key="attr.attrId">
       <div class="fl key">{{attr.attrName}}</div>
       <div class="fl value">
-        <ul class="type-list">
-          <li v-for="attrValue in attr.attrValueList" :key="attrValue">
+        <ul class="type-list"> <!-- "属性ID:属性值:属性名" -->
+          <li v-for="attrValue in attr.attrValueList" :key="attrValue" 
+            @click="$emit('addProp', `${attr.attrId}:${attrValue}:${attr.attrName}`)">
+            <!-- @click="addProp(`${attr.attrId}:${attrValue}:${attr.attrName}`)" -->
             <a>{{attrValue}}</a>
           </li>
         </ul>
@@ -30,6 +32,10 @@
   import {mapGetters} from 'vuex'
   export default {
     name: 'SearchSelector',
+
+    props: {
+      addProp: Function
+    },
 
     computed: {
       ...mapGetters(['trademarkList', 'attrsList'])

@@ -169,7 +169,10 @@
           params: this.$route.params
         }
 
-        if (event.target.tagName.toUpperCase() === 'A') {
+        // 如果当前是搜索路由, 使用replace跳转, 否则用push
+        if (this.$route.name==='search') {
+          this.$router.replace(location)
+        } else {
           this.$router.push(location)
         }
 

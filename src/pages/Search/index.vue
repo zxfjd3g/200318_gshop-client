@@ -13,11 +13,12 @@
           <ul class="fl sui-tag">
             <li class="with-x" v-if="options.categoryName" @click="deleteCategory">{{options.categoryName}}<i>×</i></li>
             <li class="with-x" v-if="options.keyword" @click="deleteKeyword">{{options.keyword}}<i>×</i></li>
+            <li class="with-x" v-for="(prop, index) in options.props" :key="prop" @click="deleteProp(index)">{{prop}}<i>×</i></li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector :addProp="addProp" @addProp="addProp"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -153,6 +154,26 @@
     methods: {
 
       /* 
+      删除一个属性条件
+      */
+      deleteProp (index) {
+        this.options.props.splice(index, 1)
+        this.getProductList()
+      },
+
+      /* 
+      添加一个属性条件
+      */
+      addProp (prop) {  // "属性ID:属性值:属性名"
+        // 如果props中已经有了, 直接结束
+        if (this.options.props.indexOf(prop)!==-1) return
+        // 向props中添加prop
+        this.options.props.push(prop)
+        // 重新请求
+        this.getProductList()
+      },
+
+      /* 
       删除分类条件 
       */
       deleteCategory () {
@@ -162,8 +183,15 @@
         this.options.category2Id = ''
         this.options.category3Id = ''
 
-        // 重新请求获取数据显示
-        this.getProductList(1)
+        // 重新请求获取数据显示  ==> 问题: 路径上的参数没有变化
+        // this.getProductList(1)
+
+        // 重新跳转到当前Search, 不带query参数, 带params参数
+        // this.$router.push({
+        this.$router.replace({
+          name: 'search',
+          params: this.$route.params
+        })
       },
 
       /* 
@@ -173,7 +201,17 @@
         // 清除keyword
         this.options.keyword = ''
         // 重新请求获取数据显示
-        this.getProductList(1)
+        // this.getProductList(1)
+
+        // 重新跳转到当前Search, 不带params参数, 带query参数
+        // this.$router.push({
+        this.$router.replace({
+          name: 'search',
+          query: this.$route.query
+        })
+
+        // 通知Header清除输入的关键字
+        this.$bus.$emit('clearKeyword')
       },
 
       /* 
