@@ -116,43 +116,6 @@
 			Vue.delete( target, key )
 			vm.$delete( target, key )
 
-## 自定义分页组件
-	直接使用已定义好的组件
-		<Pagination 
-	        :currentPage="options.pageNo"
-	        :pageSize="options.pageSize"
-	        :total="productList.total"
-	        :showPageNo="5"
-	        @currentChange="getProductList"
-        />
-	封装一个高复用的组件: Pagination      应该面试时交流
-		静态模板与样式  ===> 静态组件
-		设计props: 从父组件接收的可变数据
-			currentPage: 当前页码
-			pageSize: 每页数量
-			total: 总数量
-			showPageNo: 连续页码数 (一般是奇数)
-		
-		设计data: 组件内部的可变数据
-			myCurrentPage: 组件内部维护的当前页码
-		
-		设计computed: 根据props或data数据计算产生的数据
-			totalPages: 总页数
-				依赖数据: total / pageSize   19 / 2  10
-				算法: Math.ceil(total/pageSize)
-			start/end: 连续页码的开妈页码与结束页码
-				依赖数据: myCurrentPage / showPageNo / totalPages
-				算法:
-					start的最小值是1
-					end的最大值是totalPages
-					从start到end的数量为showPageNo
-		
-		模板页面根据props/data/computed动态显示
-			v-for/v-if/disabled
-			v-for与v-if优先级问题    面试问
-
-		当用户操作时更新数据  ==> 更新界面
-			当当前组件更新数据后, 有可能需要通知父组件(使用什么技术? 自定义事件/函数props)
-			当父组件的数据更新后, 有可能需要通知子组件
-					父组件主动调用子组件的方法修改 ===> 当前不用(后面会用的)
-					子组件主动监视父组件的变化  ===> 当前比较合适
+## 问题: 优化减少没必要的请求参数
+	原因: 当前的后台接口不需要空串参数或空数组参数
+	解决: 在提交请求前, 将""参数和空数组的参数数据删除
