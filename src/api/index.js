@@ -29,3 +29,7 @@ export const reqCategoryList = () => ajax('/product/getBaseCategoryList')
 // 定义mock接口的请求函数
 export const reqBanners = () => mockAjax('/banners')
 export const reqFloors = () => mockAjax('/floors')
+
+
+// 请求搜索匹配的商品相关数据
+export const reqProductList = (searchParams) => ajax.post('/list', searchParams)

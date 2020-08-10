@@ -20,25 +20,27 @@ import 'swiper/css/swiper.css'
 export default {
   name: 'Carousel',
   props: {
-    carouselList: Array
+    carouselList: Array,
+    autoplay: Boolean
   },
 
   mounted (){
-    if (this.carouselList.length>0) {
-      new Swiper(this.$refs.swiper, {
-        // direction: 'vertical', // 垂直切换选项   默认就是horizontal
-        loop: true, // 循环模式选项
-        // 如果需要分页器
-        pagination: {
-          el: '.swiper-pagination',
-        },
-        // 如果需要前进后退按钮
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-      }) 
-    }
+    // if (this.carouselList.length>0) {
+    //   new Swiper(this.$refs.swiper, {
+    //     // direction: 'vertical', // 垂直切换选项   默认就是horizontal
+    //     loop: true, // 循环模式选项
+    //     autoplay: this.autoplay,
+    //     // 如果需要分页器
+    //     pagination: {
+    //       el: '.swiper-pagination',
+    //     },
+    //     // 如果需要前进后退按钮
+    //     navigation: {
+    //       nextEl: '.swiper-button-next',
+    //       prevEl: '.swiper-button-prev',
+    //     },
+    //   }) 
+    // }
   },
 
   watch: {
@@ -77,6 +79,7 @@ export default {
             new Swiper(this.$refs.swiper, {
               // direction: 'vertical', // 垂直切换选项   默认就是horizontal
               loop: true, // 循环模式选项
+              autoplay: this.autoplay,
               // 如果需要分页器
               pagination: {
                 el: '.swiper-pagination',
