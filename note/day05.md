@@ -18,8 +18,8 @@
 		静态模板与样式  ===> 静态组件
 		设计props: 从父组件接收的可变数据
 			currentPage: 当前页码
-			pageSize: 每页数量
 			total: 总数量
+			pageSize: 每页数量
 			showPageNo: 连续页码数 (一般是奇数)
 		
 		设计data: 组件内部的可变数据
@@ -113,3 +113,21 @@
 			指定大图 <img>的坐标值(left, top)
 				bigImg.style.left = -2 * left + 'px'
 				bigImg.style.top = -2 * top + 'px'
+
+ImageList
+	读取vuex getters中的数据
+	swiper
+		slidesPerView: 5
+		slidesPerGroup: 5
+	点击某个小图更新Detail组件currentImageIndex(子向父通信)
+
+Zoom
+	props: imgUrl / bigUrl
+	放大镜效果
+		mousemove
+
+Detail
+	skuImageList
+	currentImageIndex = 0
+	skuImageList[currentImageIndex].imgUrl    v-if="skuImageList[currentImageIndex]"
+	<Zoom :imgUrl="skuImageList[currentImageIndex].imgUrl" v-if="skuImageList[currentImageIndex]"/>
