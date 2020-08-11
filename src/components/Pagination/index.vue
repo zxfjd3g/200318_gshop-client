@@ -6,11 +6,16 @@
     <!-- start要大于2 -->
     <button disabled v-if="startEnd.start>2">···</button>
     <!-- 
-      v-for与v-if的优先级
+      v-for与v-if的优先级   面试题
       v-for的优先级高, 先执行, 每个遍历都会执行v-if
+      1). 将v-if判断的处理放在v-for父标签上: 只需要判断一次(原本是每个遍历的元素都会判断)  ==> 适用于判断与元素无关的情况
+      2). 最好使用计算属性来去掉v-if  ===> 减少遍历的次数 ==> 适用于根据元素数据来判断的情况
     -->
-    <button v-for="item in startEnd.end" v-if="item>=startEnd.start" 
-      :class="{active: item===myCurrentPage}" @click="setCurrentPage(item)">{{item}}</button>
+    <!-- <button v-for="item in startEnd.end" v-if="item>=startEnd.start" 
+      :class="{active: item===myCurrentPage}" @click="setCurrentPage(item)">{{item}}</button> -->
+    <span v-if="isShow">
+      <button v-for="item in startEndArr"  :class="{active: item===myCurrentPage}" @click="setCurrentPage(item)">{{item}}</button>
+    </span>
     
     <button disabled v-if="startEnd.end<totalPages-1">···</button>
     <button v-if="startEnd.end<totalPages" @click="setCurrentPage(totalPages)">{{totalPages}}</button>
@@ -48,7 +53,8 @@
     data () {
       return {
         // 将传入当前页码作为内部的当前页码
-        myCurrentPage: this.currentPage || 1 
+        myCurrentPage: this.currentPage || 1,
+        isShow: false,
       }
     },
 
@@ -67,6 +73,18 @@
       totalPages () {
         const {total, pageSize} = this   // 31 10 ==> 4
         return Math.ceil(total/pageSize) // 需要向上取整
+      },
+
+      /* 
+      计算出包含从start到end的数组
+      */
+      startEndArr () {
+        const {start, end} = this.startEnd
+        const arr = []
+        for (let i = start; i <=end; i++) {
+          arr.push(i)
+        }
+        return arr
       },
 
 
