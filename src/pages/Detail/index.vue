@@ -16,9 +16,12 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <Zoom v-if="skuImageList.length>0" 
+            :imgUrl="skuImageList[currentIndex].imgUrl" 
+            :bigUrl="skuImageList[currentIndex].imgUrl"/>
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList @currentChange="handleCurrentChange"/>
+          <!-- <ImageList @currentChange="currentIndex=$event"/> -->
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -337,6 +340,11 @@
   export default {
     name: 'Detail',
 
+    data () {
+      return {
+        currentIndex: 0, // 当前要显示图片的下标
+      }
+    },
 
     computed: {
       ...mapGetters(['categoryView', 'skuInfo', 'skuImageList', 'spuSaleAttrList'])
@@ -348,6 +356,16 @@
     },
 
     methods: {
+      /* 
+      当前图片下标改变的事件监听回调
+      */
+      handleCurrentChange (index) {
+        this.currentIndex = index
+      },
+
+      /* 
+      点击指定销售属性值
+      */
       handleClick (value, valueList) {
         // 遍历valueList, 将每个value对象的isChecked指为'0'
         valueList.forEach(value => value.isChecked = '0')
