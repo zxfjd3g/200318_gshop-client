@@ -11,11 +11,16 @@
       1). 将v-if判断的处理放在v-for父标签上: 只需要判断一次(原本是每个遍历的元素都会判断)  ==> 适用于判断与元素无关的情况
       2). 最好使用计算属性来去掉v-if  ===> 减少遍历的次数 ==> 适用于根据元素数据来判断的情况
     -->
+    <!-- 
+      <span v-if="isShow"> 
+        <button v-for="item in startEndArr"  :class="{active: item===myCurrentPage}" @click="setCurrentPage(item)">{{item}}</button>
+      </span> 
+    -->
+
     <!-- <button v-for="item in startEnd.end" v-if="item>=startEnd.start" 
       :class="{active: item===myCurrentPage}" @click="setCurrentPage(item)">{{item}}</button> -->
-    <span v-if="isShow">
-      <button v-for="item in startEndArr"  :class="{active: item===myCurrentPage}" @click="setCurrentPage(item)">{{item}}</button>
-    </span>
+
+    <button v-for="item in startEndArr"  :class="{active: item===myCurrentPage}" @click="setCurrentPage(item)">{{item}}</button>
     
     <button disabled v-if="startEnd.end<totalPages-1">···</button>
     <button v-if="startEnd.end<totalPages" @click="setCurrentPage(totalPages)">{{totalPages}}</button>
@@ -54,7 +59,7 @@
       return {
         // 将传入当前页码作为内部的当前页码
         myCurrentPage: this.currentPage || 1,
-        isShow: false,
+        isShow: true,
       }
     },
 
