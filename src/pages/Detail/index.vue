@@ -63,30 +63,14 @@
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
-              <dl>
-                <dt class="title">选择颜色</dt>
-                <dd changepirce="0" class="active">金色</dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
+              <dl v-for="attr in spuSaleAttrList" :key="attr.id">
+                <dt class="title">{{attr.saleAttrName}}</dt>
+                <dd changepirce="0" :class="{active: value.isChecked==='1'}" v-for="value in attr.spuSaleAttrValueList" 
+                  :key="value.id" @click="handleClick(value, attr.spuSaleAttrValueList)">
+                  {{value.saleAttrValueName}}
+                </dd>
               </dl>
-              <dl>
-                <dt class="title">内存容量</dt>
-                <dd changepirce="0" class="active">16G</dd>
-                <dd changepirce="300">64G</dd>
-                <dd changepirce="900">128G</dd>
-                <dd changepirce="1300">256G</dd>
-              </dl>
-              <dl>
-                <dt class="title">选择版本</dt>
-                <dd changepirce="0" class="active">公开版</dd>
-                <dd changepirce="-1000">移动版</dd>
-              </dl>
-              <dl>
-                <dt class="title">购买方式</dt>
-                <dd changepirce="0" class="active">官方标配</dd>
-                <dd changepirce="-240">优惠移动版</dd>
-                <dd changepirce="-390">电信优惠版</dd>
-              </dl>
+             
             </div>
             <div class="cartWrap">
               <div class="controls">
@@ -361,6 +345,15 @@
 
     mounted () {
       this.$store.dispatch('getDetailInfo', this.$route.params.id)
+    },
+
+    methods: {
+      handleClick (value, valueList) {
+        // 遍历valueList, 将每个value对象的isChecked指为'0'
+        valueList.forEach(value => value.isChecked = '0')
+        // 将当前点击的value的isChecked指为'1'
+        value.isChecked = '1'
+      }
     },
     
     components: {
