@@ -1,18 +1,20 @@
 <template>
   <div class="pagination">
-    <button >上一页</button>
-    <button>1</button>
-    <button disabled>···</button>
-
-    <button>3</button>
-    <button>4</button>
-    <button class="active">5</button>
-    <button>6</button>
-    <button>7</button>
+    <button :disabled="myCurrentPage===1" @click="setCurrentPage(myCurrentPage-1)">上一页</button>
+    <!-- start要大于1 -->
+    <button v-if="startEnd.start>1" @click="setCurrentPage(1)">1</button>
+    <!-- start要大于2 -->
+    <button disabled v-if="startEnd.start>2">···</button>
+    <!-- 
+      v-for与v-if的优先级
+      v-for的优先级高, 先执行, 每个遍历都会执行v-if
+    -->
+    <button v-for="item in startEnd.end" v-if="item>=startEnd.start" 
+      :class="{active: item===myCurrentPage}" @click="setCurrentPage(item)">{{item}}</button>
     
-    <button>···</button>
-    <button>9</button>
-    <button>下一页</button>
+    <button disabled v-if="startEnd.end<totalPages-1">···</button>
+    <button v-if="startEnd.end<totalPages" @click="setCurrentPage(totalPages)">{{totalPages}}</button>
+    <button :disabled="myCurrentPage===totalPages" @click="setCurrentPage(myCurrentPage+1)">下一页</button>
     
     <button style="margin-left: 30px" disabled>共 {{total}} 条</button>
   </div>
@@ -47,6 +49,14 @@
       return {
         // 将传入当前页码作为内部的当前页码
         myCurrentPage: this.currentPage || 1 
+      }
+    },
+
+    watch: {
+      // 当接收到新的currentPage(本质就是Sesarch组件中的options.pageNo变化了)
+      currentPage (value) {
+        // this.myCurrentPage = this.currentPage
+        this.myCurrentPage = value
       }
     },
 
@@ -127,6 +137,19 @@
           start,
           end
         }
+      }
+    },
+
+    methods: {
+      /* 
+      设置新的当前页码
+      */
+      setCurrentPage (page) {
+        if (page===this.myCurrentPage) return
+        // 更新内部的当前页码
+        this.myCurrentPage = page
+        // 通知父组件当前页码变化了
+        this.$emit('currentChange', page)
       }
     }
 
