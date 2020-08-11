@@ -1,5 +1,5 @@
 ## 今日任务
-  1). 自定义分页组件
+	1). 自定义分页组件
 	2). Detail静态路由组件
 	3). Detail组件的动态显示
 	4). ImageList组件
@@ -8,12 +8,12 @@
 ## 自定义分页组件
 	直接使用已定义好的组件
 		<Pagination 
-      :currentPage="options.pageNo"
-      :pageSize="options.pageSize"
-      :total="productList.total"
-      :showPageNo="5"
-      @currentChange="getProductList"
-    />
+	      :currentPage="options.pageNo"
+	      :pageSize="options.pageSize"
+	      :total="productList.total"
+	      :showPageNo="5"
+	      @currentChange="getProductList"
+	    />
 	封装一个高复用的组件: Pagination      应该面试时交流
 		静态模板与样式  ===> 静态组件
 		设计props: 从父组件接收的可变数据
