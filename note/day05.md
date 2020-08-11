@@ -113,21 +113,22 @@
 			指定大图 <img>的坐标值(left, top)
 				bigImg.style.left = -2 * left + 'px'
 				bigImg.style.top = -2 * top + 'px'
-
-ImageList
-	读取vuex getters中的数据
-	swiper
-		slidesPerView: 5
-		slidesPerGroup: 5
-	点击某个小图更新Detail组件currentImageIndex(子向父通信)
-
-Zoom
-	props: imgUrl / bigUrl
-	放大镜效果
-		mousemove
-
-Detail
-	skuImageList
-	currentImageIndex = 0
-	skuImageList[currentImageIndex].imgUrl    v-if="skuImageList[currentImageIndex]"
-	<Zoom :imgUrl="skuImageList[currentImageIndex].imgUrl" v-if="skuImageList[currentImageIndex]"/>
+## 编码分析
+	ImageList
+		读取vuex getters中的数据
+		swiper
+			slidesPerView: 5
+			slidesPerGroup: 5
+		currentIndex = 0
+		点击某个小图更新Detail组件currentImageIndex(子向父通信)
+	
+	Zoom
+		props: imgUrl / bigUrl
+		放大镜效果
+			mousemove
+	
+	Detail
+		skuImageList
+		currentImageIndex = 0
+		skuImageList[currentImageIndex].imgUrl    v-if="skuImageList[currentImageIndex]"
+		<Zoom :imgUrl="skuImageList[currentImageIndex].imgUrl" v-if="skuImageList[currentImageIndex]"/>
