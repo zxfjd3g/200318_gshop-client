@@ -20,6 +20,26 @@ const actions = {
   根据指定的搜索条件, 异步获取商品列表的action
   */
   async getProductList ({commit}, searchParams) {
+
+    // 不要删除option对象中的属性
+    searchParams = {...searchParams}
+
+    /* 
+    var o1 = {m: 1, n: 2}
+    var o2 = o1
+    o2 = {...o2}  // {m: o1.m, n: o1.n}
+    delete o2.m
+    */
+
+    // 删除值为''或[]的属性
+      // 得到对象自身所有属性名组成的数组
+    Object.keys(searchParams).forEach(key => {
+      if (searchParams[key]==='' || (Array.isArray(searchParams[key]) && searchParams[key].length===0)) {
+        delete searchParams[key]
+      }
+    })
+
+
     // 1. ajax请求, 获取数据
     const result = await reqProductList(searchParams)
     // 2. 如果成功, 提交给mutation
