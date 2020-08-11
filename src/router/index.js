@@ -33,5 +33,9 @@ VueRouter.prototype.replace = function (location, onComplete, onAbort) {
 export default new VueRouter({ // 配置对象
   mode: 'history', // 没有#
   // 项目中的多个路由配置
-  routes
+  routes,
+  scrollBehavior (to, from, savedPosition) {
+    // 指定路由跳转后滚条的坐标
+    return { x: 0, y: 0 }
+  }
 })

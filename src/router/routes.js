@@ -6,7 +6,7 @@ import Home from '@/pages/Home'
 import Search from '@/pages/Search'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
-import router from '.'
+import Detail from '@/pages/Detail'
 
 export default [
   { // 一个路由
@@ -34,5 +34,11 @@ export default [
     meta: {
       isHideFooter: true // 是否隐藏footer的标识
     }
+  },
+
+  {
+    name: 'detail',
+    path: '/detail/:id',
+    component: Detail
   },
 ]
