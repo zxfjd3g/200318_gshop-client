@@ -44,7 +44,7 @@
             <span class="sum">{{item.skuPrice * item.skuNum}}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="#none" class="sindelet" @click="deleteCartItem(item.skuId)">删除</a>
             <br>
             <a href="#none">移到收藏</a>
           </li>
@@ -53,7 +53,7 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checked="isAllCheck">
+        <input class="chooseAll" type="checkbox" v-model="allCheck">
         <span>全选</span>
       </div>
       <div class="option">
@@ -86,6 +86,22 @@
         return this.$store.state.shopCart.cartList
       },
 
+      allCheck: {
+        get () {
+          return this.isAllCheck
+        },
+
+        async set (value) { // 点击改变了全选状态
+          try {
+            await this.$store.dispatch('checkAllCartItems', value)
+            // 重新获取购物车列表显示
+            this.$store.dispatch('getCartList')
+          } catch (error) {
+            alert(error.message)
+          }
+        }
+      },
+
       ...mapGetters(['totalCount', 'totalPrice', 'isAllCheck'])
     },
 
@@ -94,6 +110,17 @@
     },
 
     methods: {
+      async deleteCartItem (skuId) {
+        try {
+          // 分发给action发送请求
+          await this.$store.dispatch('deleteCartItem', skuId)
+          // 重新获取购物车列表显示
+          this.$store.dispatch('getCartList')
+        } catch (error) {
+          alert(error.message)
+        }
+      },
+
       async checkCartItem (item) {
         // 准备数据
         const skuId = item.skuId

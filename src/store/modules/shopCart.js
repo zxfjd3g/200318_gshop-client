@@ -20,13 +20,51 @@ const mutations = {
 
 const actions = {
 
+  /* 
+  删除指定购物项
+  */
+  async deleteCartItem ({commit}, skuId) {
+    const result = await reqDeleteCartItem(skuId)
+    if (result.code!==200) {
+      throw new Error('删除购物项状态失败')
+    }
+  },
+
+  /* 
+  
+  在一个action可以触发另一个action调用
+  isCheck: true/false
+  */
+  checkAllCartItems ({commit, dispatch, state}, isCheck) {
+    // 确定最新的状态值
+    const isChecked = isCheck ? 1 : 0
+
+    const promises = []
+
+    // 遍历每个购物项, 分发给checkCartItem调用去请求更新其选中状态
+    state.cartList.forEach(item => {
+      // 如果当前item的状态就是要更新为目标状态, 没有必要去dispatch发请求
+      if (isChecked===item.isChecked) return 
+
+      const {skuId} = item
+      // 针对当前item分发给checkCartItem发对应的请求, 得到包含异步结果值的promise
+      promises.push(dispatch('checkCartItem',  {skuId, isChecked}))
+    })
+
+    return Promise.all(promises) // all()返回的promise在全部都成功时才成功, 否则就是失败的
+  },
+
+  /* 
+  切换选中状态
+  skuId: 商品id
+  isChecked: 0: 不选中, 1: 选中
+  */
   async checkCartItem ({commit}, {skuId, isChecked}) {
     const result = await reqCheckCartItem(skuId, isChecked)
     if (result.code!==200) {
       throw new Error('切换购物项状态失败')
     }
   },
-
 
   /* 
   获取指定skuid的商品信息的异步action
@@ -120,8 +158,8 @@ const getters = {
   /* 
   是否都选中
   */
-  isAllCheck (state) {
-    return state.cartList.every(item => item.isChecked===1)
+  isAllCheck (state, getters) {
+    return state.cartList.every(item => item.isChecked===1) && getters.totalCount>0
   }
 }
 

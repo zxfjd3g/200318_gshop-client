@@ -42,6 +42,10 @@ export const reqDetailInfo = (skuId) => ajax.get(`/item/${skuId}`)
 export const reqCartList = () => ajax.get('/cart/cartList')
 
 // 7.添加到购物车(对已有物品进行数量改动)
+/* 
+skuId: 商品ID
+skuNum: 变化的数量   如果增加用正数, 如果减少用负数
+*/
 export const reqAddToCart = (skuId, skuNum) => ajax.post(`/cart/addToCart/${skuId}/${skuNum}`)
 
 // 8.切换商品选中状态
