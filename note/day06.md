@@ -34,8 +34,6 @@
 			函数体执行返回一个成功的promise ==> 成功, value就是返回的promise的value
 			函数体执行返回其它任意值 ==> 成功, value就是返回的值
 		dispatch()的返回值是promise, 就是异步action执行返回的promise
-		
-		方式2.1: 
 			component:
 				const promise = dispatch('addToCart', {})
 				如果promise是成功的, 做成功的处理
@@ -43,15 +41,6 @@
 			action:
 				发异步ajax请
 				请求操作失败抛出错误  ===> 请求操作失败时action的promise是失败的, 请求操作成功action的promise是成功的
-	
-		方式2.2:
-			component:
-				const errorMsg = await dispatch('addToCart', {})
-				如果errorMsg有值, 做失败的处理
-				如果errorMsg没值, 做成功的处理
-			action:
-				发异步ajax请求
-				请求操作失败返回错误信息  ===> 请求操作成功/失败时action的promise都是成功, 只是看有没有errorMsg值
 
 ## AddCartSuccess路由组件
 	使用本地的iconfont
