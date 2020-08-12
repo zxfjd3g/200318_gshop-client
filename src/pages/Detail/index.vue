@@ -77,12 +77,12 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
+                <input autocomplete="off" class="itxt" v-model="skuNum">
                 <a href="javascript:" class="plus">+</a>
                 <a href="javascript:" class="mins">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addToCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -91,7 +91,7 @@
     </section>
 
     <!-- 内容详情页 -->
-    <section class="product-detail">
+    <!-- <section class="product-detail">
       <aside class="aside">
         <div class="tabWraped">
           <h4 class="active">相关分类</h4>
@@ -328,7 +328,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
   </div>
 </template>
 
@@ -343,6 +343,7 @@
     data () {
       return {
         currentIndex: 0, // 当前要显示图片的下标
+        skuNum: 1
       }
     },
 
@@ -356,6 +357,35 @@
     },
 
     methods: {
+      /* 
+      添加到购物车
+      */
+      async addToCart () {
+        // 准备数据
+        const skuId = this.$route.params.id
+        const skuNum = this.skuNum
+
+        /* 
+        dispatch()返回一个promise, promise的结果值就是action的返回值
+          如果action返回的是promise, 那就是它
+          如果action返回的是非promise, 创建一个promise对象返回
+        */
+        // const p = this.$store.dispatch('test')
+        // console.log('ppp', p)
+
+        try {
+          // 分发添加购物车的异步action
+          await this.$store.dispatch('addToCart', {})
+          // 根据请求是否成功, 做不同的响应的处理
+          // 成功了
+          alert('成功了')
+        } catch (error) { // 失败了
+          alert(error.message)
+        }
+        
+      },
+
+
       /* 
       当前图片下标改变的事件监听回调
       */

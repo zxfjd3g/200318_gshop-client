@@ -36,8 +36,8 @@
 		dispatch()的返回值是promise, 就是异步action执行返回的promise
 			component:
 				const promise = dispatch('addToCart', {})
-				如果promise是成功的, 做成功的处理
-				如果promise是失败的, 做失败的处理
+				如果promise是成功的, 做成功的处理    await后面
+				如果promise是失败的, 做失败的处理    try...catch
 			action:
 				发异步ajax请
 				请求操作失败抛出错误  ===> 请求操作失败时action的promise是失败的, 请求操作成功action的promise是成功的

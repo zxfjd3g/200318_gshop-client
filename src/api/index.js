@@ -4,6 +4,7 @@
 */
 import ajax from './ajax'
 import mockAjax from './mockAjax'
+import { method } from 'lodash'
 
 /* 
 登陆
@@ -36,3 +37,19 @@ export const reqProductList = (searchParams) => ajax.post('/list', searchParams)
 
 // 获取商品详情信息
 export const reqDetailInfo = (skuId) => ajax.get(`/item/${skuId}`)
+
+// 6.获取购物车列表 /api/cart/cartList
+export const reqCartList = () => ajax.get('/cart/cartList')
+
+// 7.添加到购物车(对已有物品进行数量改动)
+export const reqAddToCart = (skuId, skuNum) => ajax.post(`/cart/addToCart/${skuId}/${skuNum}`)
+
+// 8.切换商品选中状态
+/* 
+0代表取消选中
+1代表选中
+*/
+export const reqCheckCartItem = (skuId, isChecked) => ajax.get(`/cart/checkCart/${skuId}/${isChecked}`)
+
+// 9.删除购物车商品
+export const reqDeleteCartItem = (skuId) => ajax.delete(`/cart/deleteCart/${skuId}`)
