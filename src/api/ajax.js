@@ -6,10 +6,12 @@
   结束进度条: 响应拦截器回调
 3. 成功返回的数据不再是response, 而直接是响应体数据response.data
 4. 统一处理请求错误, 具体请求也可以选择处理或不处理
+5. 每个请求自动携带userTempId的请求头: 在请求拦截器中实现
 */
 import axios from 'axios'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import store from '@/store'
 
 NProgress.configure({ showSpinner: false }) // 隐藏右侧的旋转进度条
 
@@ -24,6 +26,10 @@ const instance = axios.create({
 instance.interceptors.request.use(config => {
   // 显示进度条: 请求拦截器回调
   NProgress.start()
+
+  /* 每个请求自动携带userTempId的请求头: 在请求拦截器中实现 */
+  const userTempId = store.state.user.userTempId
+  config.headers.userTempId = userTempId
 
   return config // 必须返回config
 }) 
