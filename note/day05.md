@@ -34,17 +34,47 @@
 				算法:
 					start的最小值是1
 					end的最大值是totalPages
-					从start到end的数量为showPageNo
+					从start到end的数量<=showPageNo
+						start = myCurrentPage - Math.floor(showPageNo/2)
+						if (start<1)  start = 1
+						end = start + showPageNo -1
+						if (end>totalPages) {
+							end = totalPages
+							start = end - showPageNo + 1
+							if (start<1) start = 1
+						}
+						
+						
 		
 		模板页面根据props/data/computed动态显示
 			v-for/v-if/disabled
 			v-for与v-if优先级问题    面试问
+
+		v-for与v-if的优先级   面试题
+	      v-for的优先级高, 先执行, 每个遍历都会执行v-if
+	      1). 将v-if判断的处理放在v-for父标签上: 只需要判断一次(原本是每个遍历的元素都会判断)  ==> 适用于判断与元素无关的情况
+	      2). 最好使用计算属性来去掉v-if  ===> 减少遍历的次数 ==> 适用于根据元素数据来判断的情况
 
 		当用户操作时更新数据  ==> 更新界面
 			当当前组件更新数据后, 有可能需要通知父组件(使用什么技术? 自定义事件/函数props)
 			当父组件的数据更新后, 有可能需要通知子组件
 					父组件主动调用子组件的方法修改 ===> 当前不用(后面会用的)
 					子组件主动监视父组件的变化  ===> 当前比较合适
+
+## 双向数据绑定 面试题
+	数据绑定:
+		数据劫持: 通过definedProperty给data中所有层次属性加getter/setter  -->observer
+		订阅与发布: dep与watcher
+	双向(v-model="xxx"):
+		input事件监听: 将最新输入的数据保存到data中   this.xxx = event.target.value   // 数据代理
+
+	数组响应式处理: 重写数组一系列更新元素的方法(调用原生方法 ==> 更新界面)
+
+## 模板的数据来源
+	data
+	props
+	computed: data/props/state/getters
+
 
 ## Detail静态路由组件
 	定义Detail静态组件
@@ -66,6 +96,8 @@
 	原因:  data/state中的数据初始值是一个空对象/空数组, 如果模板中直接写一个三层(a.b.c)表达式
 	解决1: 想办法不让detailInfo.categoryView的结果是undefined, 利用getters
 	解决2: 利用v-if来判断, 只有当有数据才解析显示,  ==> 不能使用v-show
+
+	imageList[currentIndex].imgUrl    a.b.c  v-if="a.b"  v-show="a.b"
 
 ## 销售属性列表功能 (大家自己做)
 	功能: 
