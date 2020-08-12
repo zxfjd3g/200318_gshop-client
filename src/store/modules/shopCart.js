@@ -74,9 +74,18 @@ const actions = {
     })
   },
 
-  test () {
-    return 2
-  }
+  async addToCart3 ({commit}, {skuId, skuNum, callback}) {   // dispatch('addToCart', {skuId, skuNum})
+    const result = await reqAddToCart(skuId, skuNum)
+    if (result.code!==200) {  // 失败了
+      callback('添加购物车失败')
+    } else { // 成功了
+      callback()
+    }
+  },
+
+  // test () {
+  //   return 2
+  // }
 }
 
 const getters = {

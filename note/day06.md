@@ -19,7 +19,7 @@
 		如果失败了, 提示
 
 ## 如何实现: dispatch异步action完成(成功/失败)后, 再去做某些操作(提示/跳转)
-	方式一: 使用回调函数数据
+	方式一: 使用回调函数数据  (可以不写)
 		component:
 			dispatch('addToCart', {callback: this.callback}) 
 			callback(errorMsg) {// 根据errorMsg是否有值来做相应处理}
@@ -47,12 +47,13 @@
 	跳转路由携带数据:
 		query/params参数: 刷新数据还在, 不能携带对象数据
 		vuex: 在跳转前保存到vuex的state中: 可以传递任意类型的数据, 刷新数据不在了
-		sessionStorage与localStorage: 可能利用它们携带基本或对象类型数据, 刷新数据还存在
+		sessionStorage与localStorage: 可以利用它们携带基本或对象类型数据, 刷新数据还存在
 
 ## sessionStorage与localStorage的区别
 	相同点:
 		都是window上的属性对象
-		语法: setItem(key, value)/getItem(key)/removeItem(key)  key是标识名称, value是json字符串
+		保存的数据刷新都存在
+		语法: setItem(key, value)/getItem(key)/removeItem(key)/clear()  key是标识名称, value是json字符串
 		都纯浏览器端的存储, 请求时不会自动携带(区别于cookie)
 	不同点:
 		localStorage: 数据保存在浏览器管理的本地文件中, 刷新或关闭浏览器, 数据依然还在

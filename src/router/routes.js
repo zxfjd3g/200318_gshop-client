@@ -7,6 +7,7 @@ import Search from '@/pages/Search'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
 
 export default [
   { // 一个路由
@@ -40,5 +41,9 @@ export default [
     name: 'detail',
     path: '/detail/:id',
     component: Detail
+  },
+  {
+    path: '/addcartsuccess',
+    component: AddCartSuccess
   },
 ]

@@ -375,14 +375,38 @@
 
         try {
           // 分发添加购物车的异步action
-          await this.$store.dispatch('addToCart', {})
+          await this.$store.dispatch('addToCart', {skuId, skuNum})
           // 根据请求是否成功, 做不同的响应的处理
           // 成功了
-          alert('成功了')
+
+          // 将skuInfo对象的json保存到sessionStorage
+          window.sessionStorage.setItem('SKU_INFO', JSON.stringify(this.skuInfo))
+
+          // 跳转到成功路由并携带query参数
+          this.$router.push({
+            path: '/addcartsuccess',
+            query: {
+              skuNum
+            }
+          })
         } catch (error) { // 失败了
           alert(error.message)
         }
         
+      },
+
+      // 使用callback来接收异步action完成后通知
+      addToCart2 () {
+        const skuId = this.$route.params.id
+        const skuNum = this.skuNum
+        function callback (errorMsg) {
+          if (errorMsg) {
+            alert(errorMsg)
+          } else {
+             alert('成功了')
+          }
+        }
+        this.$store.dispatch('addToCart3', {skuId, skuNum, callback})
       },
 
 
