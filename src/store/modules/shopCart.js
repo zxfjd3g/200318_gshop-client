@@ -19,6 +19,15 @@ const mutations = {
 }
 
 const actions = {
+
+  async checkCartItem ({commit}, {skuId, isChecked}) {
+    const result = await reqCheckCartItem(skuId, isChecked)
+    if (result.code!==200) {
+      throw new Error('切换购物项状态失败')
+    }
+  },
+
+
   /* 
   获取指定skuid的商品信息的异步action
   */
@@ -89,6 +98,31 @@ const actions = {
 }
 
 const getters = {
+
+  /* 
+  所有选中的数量
+  */
+  totalCount (state) {
+    // let total = 0
+    // state.cartList.forEach(item => {
+    //   total += item.isChecked===1 ? item.skuNum : 0
+    // })
+    return state.cartList.reduce((preTotal, item) => preTotal + (item.isChecked===1 ? item.skuNum : 0), 0)
+  },
+
+  /* 
+  所有选中的总价格
+  */
+  totalPrice (state) {
+    return state.cartList.reduce((preTotal, item) => preTotal + (item.isChecked===1 ? item.skuNum*item.skuPrice : 0), 0)
+  },
+
+  /* 
+  是否都选中
+  */
+  isAllCheck (state) {
+    return state.cartList.every(item => item.isChecked===1)
+  }
 }
 
 export default {

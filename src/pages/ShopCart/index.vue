@@ -11,24 +11,37 @@
         <div class="cart-th6">操作</div>
       </div>
       <div class="cart-body">
-        <ul class="cart-list">
+        <!-- 
+
+          cartPrice: 3400
+          id: 4683
+          imgUrl: "http://182.92.128.115:8080/group1/M00/00/0D/rBFUDF7G-SCAAq31AAFdgoifvoA470.jpg"
+          isChecked: 1
+          skuId: 120
+          skuName: "小米10--22"
+          skuNum: 1
+          skuPrice: 3400
+          userId: "8998b27d-f291-4de7-b586-617c95f6c27f"
+         -->
+        <ul class="cart-list" v-for="item in cartList" :key="item.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list">
+            <input type="checkbox" name="chk_list" :checked="item.isChecked===1" 
+              @change="checkCartItem(item)">
           </li>
           <li class="cart-list-con2">
-            <img src="./images/goods1.png">
-            <div class="item-msg">米家（MIJIA） 小米小白智能摄像机增强版 1080p高清360度全景拍摄AI增强</div>
+            <img :src="item.imgUrl">
+            <div class="item-msg">{{item.skuName}}</div>
           </li>
           <li class="cart-list-con4">
-            <span class="price">399.00</span>
+            <span class="price">{{item.skuPrice}}</span>
           </li>
           <li class="cart-list-con5">
             <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" value="1" minnum="1" class="itxt">
+            <input autocomplete="off" type="text" :value="item.skuNum" minnum="1" class="itxt">
             <a href="javascript:void(0)" class="plus">+</a>
           </li>
           <li class="cart-list-con6">
-            <span class="sum">399</span>
+            <span class="sum">{{item.skuPrice * item.skuNum}}</span>
           </li>
           <li class="cart-list-con7">
             <a href="#none" class="sindelet">删除</a>
@@ -40,7 +53,7 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox">
+        <input class="chooseAll" type="checkbox" :checked="isAllCheck">
         <span>全选</span>
       </div>
       <div class="option">
@@ -50,10 +63,10 @@
       </div>
       <div class="money-box">
         <div class="chosed">已选择
-          <span>0</span>件商品</div>
+          <span>{{totalCount}}</span>件商品</div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">0</i>
+          <i class="summoney">{{totalPrice}}</i>
         </div>
         <div class="sumbtn">
           <a class="sum-btn" href="###" target="_blank">结算</a>
@@ -64,11 +77,37 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
   export default {
     name: 'ShopCart',
 
+    computed: {
+      cartList () {
+        return this.$store.state.shopCart.cartList
+      },
+
+      ...mapGetters(['totalCount', 'totalPrice', 'isAllCheck'])
+    },
+
     mounted () {
       this.$store.dispatch('getCartList')
+    },
+
+    methods: {
+      async checkCartItem (item) {
+        // 准备数据
+        const skuId = item.skuId
+        const isChecked = item.isChecked === 1 ? 0 : 1
+        try {
+          // 分发给action发送请求
+          await this.$store.dispatch('checkCartItem', {skuId, isChecked})
+          // 重新获取购物车列表显示
+          this.$store.dispatch('getCartList')
+        } catch (error) {
+          alert(error.message)
+        }
+
+      }
     }
   }
 </script>

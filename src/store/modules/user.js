@@ -5,7 +5,7 @@ import { getUserTempId } from '@/utils'
 
 const state = {
   userInfo: {},
-  userTemplId: getUserTempId()
+  userTempId: getUserTempId()
 }
 const mutations = {}
 const actions = {}
