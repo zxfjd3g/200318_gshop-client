@@ -21,6 +21,22 @@ const mutations = {
 const actions = {
 
   /* 
+  删除所有勾选的购物项的异步action
+  */
+  deleteCheckedCartItems ({state, dispatch}) {
+
+    // 遍历每个勾选的购物项去分发deleteCartItem
+    const promises = state.cartList.reduce((pre, item) => {
+      if (item.isChecked===1) {
+        pre.push(dispatch('deleteCartItem', item.skuId))
+      }
+      return pre
+    }, [])
+
+    return Promise.all(promises)
+  },
+
+  /* 
   删除指定购物项
   */
   async deleteCartItem ({commit}, skuId) {

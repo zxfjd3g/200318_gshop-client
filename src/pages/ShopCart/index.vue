@@ -57,7 +57,7 @@
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="javascript:" @click="deleteCheckedCartItems">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -110,6 +110,26 @@
     },
 
     methods: {
+
+      /* 
+      删除所有选中的购物项
+      */
+      async deleteCheckedCartItems () {
+        if (window.confirm(`确定删除吗?`)) {
+          try {
+            // 分发一个异步action
+            await this.$store.dispatch('deleteCheckedCartItems')
+            // 异步请求操作成功了
+            this.$store.dispatch('getCartList')
+          } catch (error) { // 异步请求操作失败了
+            alert(error.message)
+          }
+        }
+      },
+
+      /* 
+      删除指定购物项
+      */
       async deleteCartItem (skuId) {
         try {
           // 分发给action发送请求

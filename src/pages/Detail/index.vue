@@ -78,8 +78,8 @@
             <div class="cartWrap">
               <div class="controls">
                 <input autocomplete="off" class="itxt" v-model="skuNum">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <a href="javascript:" class="plus" @click="skuNum += 1">+</a>
+                <a href="javascript:" class="mins" @click="skuNum = skuNum===1 ? 1 : skuNum-1">-</a>
               </div>
               <div class="add">
                 <a href="javascript:" @click="addToCart">加入购物车</a>
