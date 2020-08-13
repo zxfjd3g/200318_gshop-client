@@ -129,7 +129,7 @@
 		绑定click与change事件
 		在vue中和原生DOM中的input输入框
             input事件: 输入改变时触发
-            change事件: 失去焦点才触发
+            change事件: 失去焦点改变才触发
 		在change事件调用多输入了一个$event参数
 		在事件回调函数分异步action发更新数量的请求
 		对数量要进行判断限制
