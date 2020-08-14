@@ -7,20 +7,6 @@ import mockAjax from './mockAjax'
 import { method } from 'lodash'
 
 /* 
-登陆
-/api/user/passport/login POST  mobile/password
-*/
-export function reqLogin ({mobile, password}) {
-  return ajax.post('/user/passport/login', {mobile, password})
-  // return ajax({
-  //   url: '/user/passport/login',
-  //   method: 'POST',
-  //   // params: {}, // 指定query参数
-  //   data: {mobile, password}, // 指定body参数
-  // })
-}
-
-/* 
 首页三级分类
 /api/product/getBaseCategoryList GET
 */
@@ -57,3 +43,31 @@ export const reqCheckCartItem = (skuId, isChecked) => ajax.get(`/cart/checkCart/
 
 // 9.删除购物车商品
 export const reqDeleteCartItem = (skuId) => ajax.delete(`/cart/deleteCart/${skuId}`)
+
+/* 
+登陆
+/api/user/passport/login POST  mobile/password
+*/
+export function reqLogin (mobile, password) {
+  return ajax.post('/user/passport/login', {mobile, password})
+  // return ajax({
+  //   url: '/user/passport/login',
+  //   method: 'POST',
+  //   // params: {}, // 指定query参数
+  //   data: {mobile, password}, // 指定body参数
+  // })
+}
+
+/* 
+16.注册用户
+/api/user/passport/register POST
+mobile/password/code
+userInfo是包含上面3个属性的对象
+*/
+export const reqRegister = (userInfo) => ajax.post('/user/passport/register', userInfo)
+
+/* 
+退出登陆
+/api/user/passport/logout GET
+*/
+export const reqLogout = () => ajax('/user/passport/logout')

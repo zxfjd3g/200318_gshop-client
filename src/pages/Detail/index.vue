@@ -351,6 +351,18 @@
       ...mapGetters(['categoryView', 'skuInfo', 'skuImageList', 'spuSaleAttrList'])
     },
 
+    watch: {
+      skuNum (value) {
+        const reg = /^0+|\D+0*/g
+        value += '' // 转成字符串
+        if (value==='') {
+          this.skuNum = 1
+        } else if ((value).match(reg)) { // match是判断是否匹配正则(是否有非法字符)
+          this.skuNum = value.replace(reg, '') || 1
+        }
+      }
+    },
+
 
     mounted () {
       this.$store.dispatch('getDetailInfo', this.$route.params.id)

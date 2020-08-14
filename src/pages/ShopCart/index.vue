@@ -37,11 +37,17 @@
           </li>
           <li class="cart-list-con5">
             <a href="javascript:void(0)" class="mins" @click="updateSkuNum(item, -1)">-</a>
+            <!-- 
+              <button @click="test"></button>
+              <button @click="test(1, $event)"></button>
+              <button @click="($event) => {test(1, $event)}"></button> // 在外层包了一个函数, 形参是$event 
+            -->
             <input autocomplete="off" type="text" class="itxt" 
-              :value="item.skuNum" @change="updateSkuNum(item, $event.target.value-item.skuNum, $event)">
+              :value="item.skuNum" @change="updateSkuNum(item, $event.target.value-item.skuNum, $event)"
+              @input="validInput">
             <a href="javascript:void(0)" class="plus" @click="updateSkuNum(item, 1)">+</a>
           </li>
-          <li class="cart-list-con6">
+          <li class="cart-list-con6" @click='test(1)'>
             <span class="sum">{{item.skuPrice * item.skuNum}}</span>
           </li>
           <li class="cart-list-con7">
@@ -113,6 +119,22 @@
     methods: {
 
       /* 
+      检查输入的合法性, 并及时自动处理
+      */
+    // 目标: 将输入框中的开头的n个0或者n个非数字替换为空串
+		// 正则: /^0+|\D+0*/g : 匹配 开头的1+个0 或者 任意位置的1+个非数字及后面0+个0
+		// 	\D 代表非数字   \d 代表数字
+		// 	+ 代表个数>=1
+		// 	* 代表个数>=0
+		// 	| 或者
+		// 	g 找出所有匹配的
+		// 测试文本: -0a011a0110  替换后变为 11110
+      validInput (event) {
+        const value = event.target.value
+        event.target.value = value.replace(/^0+|\D+0*/g, '')
+      },
+
+      /* 
       更新购物项商品的数量
       changeNum: 改变的数量
       */
@@ -122,7 +144,6 @@
 
         // 只有当目标数量大于0时, 才处理, 否则不处理
         const targetNum = skuNum + changeNum
-
         if (targetNum>0) {
           try {
             // 分发一个异步action
