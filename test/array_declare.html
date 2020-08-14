@@ -38,23 +38,6 @@
     // 5. 找出一个值大于8且下标是偶数位的元素的下标
     // 6. 判断下标为偶数的元素是否都为奇数
     // 7. 判断是否有下标为偶数的元素值为奇数
-
-
-    console.log(arr.map((item, index) => item + 10))
-    console.log(arr.reduce((pre, item, index) => {
-      pre.push(item + 10)
-      return pre  // 如果累计的是对象或数组, 最后总是返回pre
-    }, []))
-    console.log(arr.reduce((preTotal, item, index) => preTotal + (item%2===1 ? item : 0), 0))
-    console.log(arr.filter((item, index) => item>8 && index%2===0))
-    console.log(arr.find((item, index) => item>8 && index%2===0))
-    console.log(arr.findIndex((item, index) => item>8 && index%2===0))
-    console.log(arr.every((item, index) => index%2===1 || item%2===1))
-    console.log(arr.some((item, index) => index%2===0 && item%2===1))
-  </script>
-
-  <script>
-    
   </script>
 </body>
 </html>
