@@ -6,6 +6,7 @@ import Carousel from '@/components/Carousel'
 import Pagination from '@/components/Pagination'
 import store from './store'
 import './mock/mockServer'
+import './plugins/validate'
 
 Vue.config.productionTip = false
 

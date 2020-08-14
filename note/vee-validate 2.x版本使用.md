@@ -1,7 +1,7 @@
 # 1. 说明
-    vee-validate是专门用来做表单验证的vue插件
+	vee-validate是专门用来做表单验证的vue插件
 	我们当前用的是2.x的版本, 最新的3.x版本使用比较麻烦
-    github地址: https://github.com/logaretm/vee-validate
+	github地址: https://github.com/logaretm/vee-validate
 	内置校验规则: https://github.com/logaretm/vee-validate/tree/v2/src/rules
 	中文messages: https://github.com/logaretm/vee-validate/blob/v2/locale/zh_CN.js
 
