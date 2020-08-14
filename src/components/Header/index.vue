@@ -5,7 +5,11 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="userInfo.token">
+            <span>{{userInfo.nickName}}</span>
+            <a href="javascript:" style="margin-left: 15px">退出</a>
+          </p>
+          <p v-else>
             <span>请</span>
             <router-link to="/login">登录</router-link>
             <router-link class="register" to="/register">免费注册</router-link>
@@ -57,6 +61,12 @@
     data () {
       return {
         keyword: ''
+      }
+    },
+
+    computed: {
+      userInfo () {
+        return this.$store.state.user.userInfo
       }
     },
 

@@ -20,3 +20,20 @@ export function getUserTempId() {
 
   return userTempId
 }
+
+/* 
+保存用户信息
+*/
+export function saveUserInfo(userInfo) {
+  window.localStorage.setItem('USER_INFO_KEY', JSON.stringify(userInfo))
+}
+
+/* 
+读取用户信息
+*/
+export const getUserInfo = () => JSON.parse(localStorage.getItem('USER_INFO_KEY')) || {}
+
+/* 
+删除用户信息
+*/
+export const removeUserInfo = () => localStorage.removeItem('USER_INFO_KEY')
