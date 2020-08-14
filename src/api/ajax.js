@@ -7,6 +7,7 @@
 3. 成功返回的数据不再是response, 而直接是响应体数据response.data
 4. 统一处理请求错误, 具体请求也可以选择处理或不处理
 5. 每个请求自动携带userTempId的请求头: 在请求拦截器中实现
+6. 如果当前有token, 自动携带token的请求头
 */
 import axios from 'axios'
 import NProgress from 'nprogress'
@@ -30,7 +31,13 @@ instance.interceptors.request.use(config => {
   /* 每个请求自动携带userTempId的请求头: 在请求拦截器中实现 */
   const userTempId = store.state.user.userTempId
   config.headers.userTempId = userTempId
-
+  
+  /* 6. 如果当前有token, 自动携带token的请求头 */
+  const token = store.state.user.userInfo.token
+  if (token) {
+    // config.headers.token = token
+  }
+  
   return config // 必须返回config
 }) 
 

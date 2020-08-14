@@ -18,6 +18,10 @@
         <input type="text" placeholder="请输入验证码" v-model="code"
           name="code" v-validate="{required: true, regex: /^\d{4}$/}"
           :class="{invalid: errors.has('code')}">
+          <!-- 不可以: 注册请求时总是code不正确, 
+            当前请求是浏览器发, 注册的请求是代理服务器发的, 后台找不到前面对应的code值 
+          -->
+        <!-- <img ref="code" src="http://182.92.128.115/api/user/passport/code" alt="code" @click="upateCode"> -->
         <img ref="code" src="/api/user/passport/code" alt="code" @click="upateCode">
         <span class="error-msg">{{errors.first('code')}}</span>
       </div>
