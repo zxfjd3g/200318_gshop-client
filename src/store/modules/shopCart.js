@@ -27,11 +27,13 @@ const actions = {
 
     // 遍历每个勾选的购物项去分发deleteCartItem
     const promises = state.cartList.reduce((pre, item) => {
-      if (item.isChecked===1) {
+      // 只有选中才需要处理
+      if (item.isChecked ===1) {
+        // 添加promise对象
         pre.push(dispatch('deleteCartItem', item.skuId))
       }
       return pre
-    }, [])
+    } , [])
 
     return Promise.all(promises)
   },
@@ -95,6 +97,8 @@ const actions = {
 
   /* 
   添加到购物的异步action
+  skuId: 商品id
+  skuNum: 商品改变的数量
   */
   async addToCart ({commit}, {skuId, skuNum}) {   // dispatch('addToCart', {skuId, skuNum})
     const result = await reqAddToCart(skuId, skuNum)

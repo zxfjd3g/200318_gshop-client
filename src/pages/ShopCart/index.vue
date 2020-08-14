@@ -36,9 +36,10 @@
             <span class="price">{{item.skuPrice}}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" :value="item.skuNum" minnum="1" class="itxt">
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a href="javascript:void(0)" class="mins" @click="updateSkuNum(item, -1)">-</a>
+            <input autocomplete="off" type="text" class="itxt" 
+              :value="item.skuNum" @change="updateSkuNum(item, $event.target.value-item.skuNum, $event)">
+            <a href="javascript:void(0)" class="plus" @click="updateSkuNum(item, 1)">+</a>
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{item.skuPrice * item.skuNum}}</span>
@@ -110,6 +111,34 @@
     },
 
     methods: {
+
+      /* 
+      更新购物项商品的数量
+      changeNum: 改变的数量
+      */
+      async updateSkuNum (item, changeNum, event) {
+
+        const {skuId, skuNum} = item
+
+        // 只有当目标数量大于0时, 才处理, 否则不处理
+        const targetNum = skuNum + changeNum
+
+        if (targetNum>0) {
+          try {
+            // 分发一个异步action
+            await this.$store.dispatch('addToCart', {skuId, skuNum: changeNum})
+            // 异步请求操作成功了
+            this.$store.dispatch('getCartList')
+          } catch (error) { // 异步请求操作失败了
+            alert(error.message)
+          }
+        } else {
+          if (event) {
+            // 将输入更新为原本的值
+            event.target.value = item.skuNum
+          }
+        }
+      },
 
       /* 
       删除所有选中的购物项
