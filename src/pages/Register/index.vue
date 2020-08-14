@@ -30,14 +30,18 @@
       </div>
       <div class="content">
         <label>确认密码:</label>
-        <input type="text" placeholder="请输入确认密码" v-model="password2">
-        <!-- <span class="error-msg">错误提示信息</span> -->
+        <input type="text" placeholder="请输入确认密码" v-model="password2"
+        name="确认密码" v-validate="{required: true, is: password}"
+          :class="{invalid: errors.has('确认密码')}">
+        <span class="error-msg">{{errors.first('确认密码')}}</span>
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox" v-model="isAgree">
+        <input type="checkbox" v-model="isAgree" name="协议" 
+          v-validate="'agree'">
         <span>同意协议并注册《尚品汇用户协议》</span>
-        <!-- <span class="error-msg">错误提示信息</span> -->
+        <span class="error-msg">{{errors.first('协议')}}</span>
       </div>
+      
       <div class="btn">
         <button @click="register">完成注册</button>
       </div>
@@ -83,16 +87,22 @@
       */
       async register () {
         // 进行前台表单校验
-
-        // 分发注册的异步action
-        const {mobile, password, code} = this
-        try {
-          await this.$store.dispatch('register', {mobile, password, code})
-          // 成功了, 跳转到登陆
-          this.$router.replace('/login')
-        } catch(error) {
-          // 失败了, 提示
-          alert(error.message)
+        const success = await this.$validator.validateAll() // 对所有表单项进行验证
+        if (success) { // 校验通过
+          // 分发注册的异步action
+          const {mobile, password, code} = this
+          try {
+            await this.$store.dispatch('register', {mobile, password, code})
+            // 成功了, 跳转到登陆
+            this.$router.replace('/login')
+          } catch(error) {
+            // 更新图形 验证码
+            this.upateCode()
+            // 清除code输入
+            this.code = ''
+            // 失败了, 提示
+            alert(error.message)
+          }
         }
       },
 
