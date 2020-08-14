@@ -17,11 +17,16 @@
             <form action="##">
               <div class="input-text clearFix">
                 <span></span>
-                <input type="text" placeholder="邮箱/用户名/手机号" v-model="mobile">
+                <input type="text" placeholder="手机号" v-model="mobile" name="phone" 
+                  v-validate="{required: true,regex: /^1\d{10}$/}" :class="{invalid: errors.has('phone')}">
+                <div class="error-msg">{{ errors.first('phone') }}</div>
               </div>
               <div class="input-text clearFix">
                 <span class="pwd"></span>
-                <input type="text" placeholder="请输入密码" v-model="password">
+                <input type="password" placeholder="请输入密码" v-model="password"
+                  name="密码" v-validate="{required: true, min: 6, max: 10}"
+                  :class="{invalid: errors.has('密码')}">
+                <div class="error-msg">{{ errors.first('密码') }}</div>
               </div>
               <div class="setting clearFix">
                 <label class="checkbox inline">
@@ -182,7 +187,6 @@
                 width: 302px;
                 height: 32px;
                 box-sizing: border-box;
-                border: 1px solid #ccc;
                 border-left: none;
                 float: left;
                 padding-top: 6px;
@@ -191,9 +195,16 @@
                 line-height: 22px;
                 padding-right: 8px;
                 padding-left: 8px;
-
                 border-radius: 0 2px 2px 0;
+                border: 1px solid #ccc;
                 outline: none;
+                &.invalid {
+                  border: 1px solid red;
+                }
+              }
+
+              .error-msg {
+                color: red;
               }
             }
 

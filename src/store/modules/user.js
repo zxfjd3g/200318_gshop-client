@@ -15,6 +15,10 @@ const state = {
 const mutations = {
   RECEIVE_USER_INFO (state, userInfo) {
     state.userInfo = userInfo
+  },
+
+  RESET_USER_INFO (state) {
+    state.userInfo = {}
   }
 }
 const actions = {
@@ -42,7 +46,25 @@ const actions = {
     } else {
       throw new Error(result.message || '登陆失败了')
     }
-  }
+  },
+
+  /* 
+    退出登陆
+    logout(): 请求登出的接口成功后, 清除前台用户的信息数据
+			state中的userInfo
+			localStorage中的userInfo
+    */
+  async logout ({commit}) {
+    const result = await reqLogout()
+    if (result.code==200) {
+      // 通过commit触发mutation调用 ==> 清除state中的userInfo
+      commit('RESET_USER_INFO')
+      // 删除local中保存的userInfo
+      removeUserInfo()
+    } else {
+      throw new Error(result.message || '退出登陆失败')
+    }
+  },
 }
 const getters = {}
 
