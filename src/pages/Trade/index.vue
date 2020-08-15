@@ -50,7 +50,7 @@
       </div>
       <div class="bbs">
         <h5>买家留言：</h5>
-        <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont"></textarea>
+        <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont" v-model="orderComment"></textarea>
 
       </div>
       <div class="line"></div>
@@ -86,7 +86,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a href="javascript:" class="subBtn" @click="sumitOrder">提交订单</a>
     </div>
   </div>
 </template>
@@ -98,6 +98,7 @@
 
     data () {
       return {
+        orderComment: '赶紧发吧!!!', // 用户留言
         selectedAddress: {}
       }
     },
@@ -124,6 +125,39 @@
 
     mounted () {
       this.$store.dispatch('getTradeInfo')
+    },
+
+    methods: {
+      async sumitOrder () {
+        // 准备参数数据
+        const {orderComment} = this
+        const {tradeNo, detailArrayList} = this.tradeInfo
+        const {consignee, phoneNum, userAddress} = this.selectedAddress
+
+        const tradeInfo = {
+          consignee,
+          consigneeTel: phoneNum,
+          deliveryAddress: userAddress,
+          paymentWay: 'ONLINE',
+          orderComment,
+          orderDetailList: detailArrayList
+        }
+
+        // 调用提交订单的接口函数
+        const result = await this.$API.reqSumitOrder(tradeNo, tradeInfo)
+        if (result.code===200) { // 提交订单请求成功
+          // 取出返回的订单id
+          const orderId = result.data
+          // 跳转到支付路由
+          this.$router.push({
+            path: '/pay',
+            query: {orderId}
+          })
+        } else {
+          alert(result.message || '提交订单失败')
+        }
+
+      }
     }
   }
 </script>
