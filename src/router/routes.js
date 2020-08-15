@@ -17,6 +17,9 @@ import Center from '@/pages/Center'
 import MyOrder from '@/pages/Center/MyOrder'
 import GroupBuy from '@/pages/Center/GroupBuy'
 
+import store from '@/store'
+import instance from '@/api/ajax'
+
 export default [
   { // 一个路由
     name: 'home',
@@ -35,7 +38,18 @@ export default [
     component: Login,
     meta: {
       isHideFooter: true // 是否隐藏footer的标识
-    }
+    },
+    /* b.只有没有登陆, 才能查看登陆界面 */
+    // beforeEnter (to, from, next) { // 路由前置守卫
+    //   const token = store.state.user.userInfo.token
+    //   // 如果已经登陆, 自动跳转到首页
+    //   if (token) {
+    //     next('/')
+    //   } else {
+    //     // 如果还没有登陆, 才放行显示
+    //     next()
+    //   }
+    // }
   },
   {
     path: '/register',
@@ -52,7 +66,18 @@ export default [
   },
   {
     path: '/addcartsuccess',
-    component: AddCartSuccess
+    component: AddCartSuccess,
+    /* c.只有携带的skuNum以及sessionStorage中有skuInfo数据, 才能查看添加购物车成功的界面 */
+    beforeEnter (to, from, next) {
+      const skuNum = to.query.skuNum
+      const skuInfo = JSON.parse(sessionStorage.getItem('SKU_INFO'))
+      console.log(skuNum, skuInfo)
+      if (skuNum && skuInfo instanceof Object) {
+        next()
+      } else {
+        next('/shopcart')
+      }
+    }
   },
   {
     path: '/shopcart',
@@ -62,14 +87,35 @@ export default [
   {
     path: '/trade',
     component: Trade,
+    beforeEnter (to, from, next) {
+      if (from.path==='/shopcart') {
+        next()
+      } else {
+        next('/shopcart')
+      }
+    }
   },
   {
     path: '/pay',
     component: Pay,
+    beforeEnter (to, from, next) {
+      if (from.path==='/trade') {
+        next()
+      } else {
+        next('/trade')
+      }
+    }
   },
   {
     path: '/paysuccess',
     component: PaySuccess,
+    beforeEnter (to, from, next) {
+      if (from.path==='/pay') {
+        next()
+      } else {
+        next('/pay')
+      }
+    }
   },
   {
     path: '/center',

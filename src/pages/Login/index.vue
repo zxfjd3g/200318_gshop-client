@@ -71,6 +71,7 @@
 </template>
 
 <script>
+  import store from '@/store'
   export default {
     name: 'Login',
 
@@ -98,6 +99,31 @@
           alert(error.message)
         }
       }
+    },
+
+    // beforeRouteEnter中不能直接通过this得到组件对象
+    // 因为此时组件对象还没有创建
+    beforeRouteEnter (to, from, next) { // 路由前置守卫
+      // const token = this.$store.state.user.userInfo.token
+      const token = store.state.user.userInfo.token
+      // 如果已经登陆, 自动跳转到首页
+      if (token) {
+        next('/')
+      } else {
+        // 如果还没有登陆, 才放行显示
+        next()
+      }
+
+      // next(vm => { // 组件对象创建后才执行
+      //   const token = vm.$store.state.user.userInfo.token
+      //   // 如果已经登陆, 自动跳转到首页
+      //   if (token) {
+      //     next('/')
+      //   } else {
+      //     // 如果还没有登陆, 才放行显示
+      //     next()
+      //   }
+      // })
     }
     
   }
