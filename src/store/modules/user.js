@@ -59,6 +59,7 @@ const actions = {
     if (result.code==200) {
       // 通过commit触发mutation调用 ==> 清除state中的userInfo
       commit('RESET_USER_INFO')
+      // commit('RECEIVE_USER_INFO', {})
       // 删除local中保存的userInfo
       removeUserInfo()
     } else {

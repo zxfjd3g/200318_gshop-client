@@ -4,6 +4,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
+import store from '@/store'
 
 // 声明使用
 Vue.use(VueRouter)
@@ -30,7 +31,7 @@ VueRouter.prototype.replace = function (location, onComplete, onAbort) {
   }
 }
 
-export default new VueRouter({ // 配置对象
+const router = new VueRouter({ // 配置对象
   mode: 'history', // 没有#
   // 项目中的多个路由配置
   routes,
@@ -39,3 +40,42 @@ export default new VueRouter({ // 配置对象
     return { x: 0, y: 0 }
   }
 })
+
+/* a.只有登陆了, 才能查看交易/支付/个人中心界面 */
+/* 
+需要进行登陆检查的路由路径的数组
+需要检查的路径是以其中某个开头的路径
+*/
+const checkPaths = ['/trade', '/pay', '/center'] 
+
+// 注册全局前置守卫
+router.beforeEach((to, from, next) => {
+  console.log('全局 前置守卫')
+
+  // 得到目标路由路径
+  const targetPath = to.path
+  // checkPaths.includes(targetPath)
+    // 字符串的方法startsWith() / indexOf()
+  const needCheck = checkPaths.some(path => targetPath.startsWith(path))   // /paysuccess /center/myorder
+  // 如果目标路径是需要检查路径
+  if (needCheck) {
+    const token = store.state.user.userInfo.token
+    // 如果已经登陆, 放行
+    if (token) {
+      next()
+    } else {
+      // 如果还没有登陆, 强制跳转到login
+      next('/login')
+    }
+  } else { // 如果目标路径是不需要检查路径, 直接放行
+    next()
+  }
+   
+
+  
+
+
+  
+})
+
+export default router

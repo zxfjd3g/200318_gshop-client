@@ -75,3 +75,7 @@ a:hover{
     clear: both;
     visibility: hidden;
 }
+
+.router-link-active {
+    color: red;
+}

@@ -14,6 +14,8 @@ import Trade from '@/pages/Trade'
 import Pay from '@/pages/Pay'
 import PaySuccess from '@/pages/PaySuccess'
 import Center from '@/pages/Center'
+import MyOrder from '@/pages/Center/MyOrder'
+import GroupBuy from '@/pages/Center/GroupBuy'
 
 export default [
   { // 一个路由
@@ -72,5 +74,19 @@ export default [
   {
     path: '/center',
     component: Center,
+    children: [
+      {
+        path: 'myorder',
+        component: MyOrder,
+      },
+      {
+        path: '/center/groupbuy',
+        component: GroupBuy,
+      },
+      {
+        path: '',
+        redirect: 'myorder'
+      }
+    ]
   },
 ]

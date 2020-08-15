@@ -84,7 +84,9 @@
     methods: {
       async login () {
         // 前台表单检验  (你们写)
-
+        const success = await this.$validator.validateAll() // 对所有表单项进行验证
+        if (!success) return 
+         
         // 分发登陆的异步action
         const {mobile, password} = this
         try {
