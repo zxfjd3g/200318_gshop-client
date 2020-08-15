@@ -7,6 +7,9 @@ import Pagination from '@/components/Pagination'
 import store from './store'
 import './mock/mockServer'
 import './plugins/validate'
+import * as API from '@/api'
+
+Vue.prototype.$API = API // 将包含所有接口请求函数的对象保存到Vue原型对象
 
 Vue.config.productionTip = false
 

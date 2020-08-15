@@ -71,3 +71,14 @@ export const reqRegister = (userInfo) => ajax.post('/user/passport/register', us
 /api/user/passport/logout GET
 */
 export const reqLogout = () => ajax('/user/passport/logout')
+
+/* 
+11.获取我的订单列表
+/api/order/auth/{page}/{limit} GET
+page: 页码
+limit: 每页数量
+*/
+export const reqOrders = (page, limit) => ajax(`/order/auth/${page}/${limit}`)
+
+
+
