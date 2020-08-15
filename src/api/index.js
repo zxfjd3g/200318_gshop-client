@@ -80,5 +80,44 @@ limit: 每页数量
 */
 export const reqOrders = (page, limit) => ajax(`/order/auth/${page}/${limit}`)
 
+/* 
+10.获取订单交易页信息
+/api/order/auth/trade GET
+*/
+export const reqTradeInfo = () => ajax('/order/auth/trade')
 
+/* 
+12.提交订单
+/api/order/auth/submitOrder?tradeNo={tradeNo} POST
+请求体参数对象的结构
+  {
+      "consignee": "admin",
+      "consigneeTel": "15011111111",
+      "deliveryAddress": "北京市昌平区2",
+      "paymentWay": "ONLINE",
+      "orderComment": "xxx",
+      "orderDetailList": []
+  }
+*/
+export const reqSumitOrder = (tradeNo, tradeInfo) => ajax({
+  url: '/order/auth/submitOrder',
+  method: 'POST',
+  params: {tradeNo},
+  data: tradeInfo
+})
 
+// ajax.post('/order/auth/submitOrder', tradeInfo, {
+//   params: {tradeNo}
+// })
+
+/* 
+13.获取订单支付信息
+/api/payment/weixin/createNative/{orderId} GET
+*/
+export const reqPayInfo = (orderId) => ajax(`/payment/weixin/createNative/${orderId}`)
+
+/* 
+14.查询支付订单状态
+/api/payment/weixin/queryPayStatus/{orderId} GET
+*/
+export const reqOrderStatus = orderId => ajax.get(`/payment/weixin/queryPayStatus/${orderId}`)
