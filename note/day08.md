@@ -63,8 +63,8 @@
 ## vuex
 	order.js
 	state: tradeInfo / payInfo
-	mutations:
-	actions:
+	mutations: RECEIVE_TRADE_INFO() / RECEIVE_PAY_INFO()
+	actions:  getTradeInfo() / getPayInfo()
 
 ## 订单交易
 	动态获取交易信息显示

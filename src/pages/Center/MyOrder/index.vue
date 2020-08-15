@@ -112,7 +112,6 @@
         } else {
           alert(result.message)
         }
-        
       }
     }
   }
