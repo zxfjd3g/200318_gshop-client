@@ -59,7 +59,7 @@
                 <div class="list-wrap">
                   <div class="p-img">
                     <router-link :to="`/detail/${good.id}`">
-                      <img :src="good.defaultImg" />
+                      <img v-lazy="good.defaultImg" />
                     </router-link>
                   </div>
                   <div class="price">
@@ -109,7 +109,7 @@
           categoryName: '',  // 分类名称
           keyword: '',  // 搜索关键字
           pageNo: 1, // 当前页码
-          pageSize: 5, // 每页数量
+          pageSize: 10, // 每页数量
           trademark: '', // 品牌条件   品牌ID:品牌名称,  4:小米
           props: [], // 多个属性条件    属性id:属性值:属性名 "2:6.65-6.74英寸:屏幕尺寸"
           order: '1:desc', // 排序条件  1: 综合,2: 价格 asc: 升序,desc: 降序   1:desc

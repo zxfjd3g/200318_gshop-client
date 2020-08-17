@@ -110,6 +110,7 @@
         QRCode.toDataURL(this.payInfo.codeUrl)
           .then(url => {
             console.log(url)
+            // 显示二维码图片
             this.$alert(`<img src="${url}"/>`, '请使用微信扫码支付', {
               dangerouslyUseHTMLString: true, // 将内容字符串作为html解析
               showClose: false, // 不显示右上角的关闭按钮
@@ -117,11 +118,57 @@
               cancelButtonText: '支付中遇到了问题',
               confirmButtonText: '已支付',
               center: true, // 水平居中显示
-            });
+            })
+              .then(() => {
+                clearInterval(this.intervalId)
+                this.intervalId = null
+                // 跳转到成功页面
+                this.$router.push('/paysuccess')
+              })
+              .catch(() => {
+                this.$message.warning('请联系客服小姐姐')
+                clearInterval(this.intervalId)
+                this.intervalId = null
+              })
+
+            // 轮询获取订单的支付状态(每隔1S发个请求)
+            this.intervalId = setInterval(() => {
+              this.$API.reqOrderStatus(this.$route.query.orderId)
+                .then(result => {
+                  console.log(result.code)
+                  if (result.code===200) { // 支付完成
+                    // 清除定时器
+                    clearInterval(this.intervalId)
+                    this.intervalId = null
+                    // 关闭对话框
+                    this.$msgbox.close()
+                    // 提示支付成功
+                    this.$message.success('支付成功')
+                    // 跳转到成功页面
+                    this.$router.push('/paysuccess')
+                    // 删除购物车中选中的商品
+                    this.$store.dispatch('deleteCheckedCartItems')
+                  }
+                })
+                .catch((error) => {
+                  console.log('---', error)
+                  this.$message.error('获取订单状态出错了!')
+                  clearInterval(this.intervalId)
+                  this.intervalId = null
+                })
+            }, 1000);
+
           })
           .catch(err => {
             alert('解决二维码失败!')
           })
+      }
+    },
+
+    beforeDestroy () {
+      if (this.intervalId) {
+        clearInterval(this.intervalId)
+        this.$alert.close()
       }
     }
   }

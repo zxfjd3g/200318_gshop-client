@@ -2,11 +2,26 @@
 所有路由配置的数组
 */
 
-import Home from '@/pages/Home'
-import Search from '@/pages/Search'
+// import Home from '@/pages/Home'
+// import Search from '@/pages/Search'
+// import Detail from '@/pages/Detail'
+
+
+/* 
+静态import: import Home from '@/pages/Home'  ==> 打包形成一个文件
+动态import: import('@/pages/Home')  ==> 被引入的模块单独打包(生成另一个打包文件)
+
+
+路由懒加载:
+1. 使用动态import, 对路由组件进行单独打包(code split: 代码分割)
+2. 配置的组件是一个函数, 只有访问对应路由时才会执行, 去请求加载对应的路由组件的打包文件
+*/
+const Home = () => import('@/pages/Home')
+const Search = () => import('@/pages/Search')
+// const Detail = () => import('@/pages/Detail')
+
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
-import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
 
@@ -62,7 +77,7 @@ export default [
   {
     name: 'detail',
     path: '/detail/:id',
-    component: Detail
+    component: () => import('@/pages/Detail')
   },
   {
     path: '/addcartsuccess',
