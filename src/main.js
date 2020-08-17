@@ -7,6 +7,7 @@ import Pagination from '@/components/Pagination'
 import store from './store'
 import './mock/mockServer'
 import './plugins/validate'
+import './plugins/elements'
 import * as API from '@/api'
 
 Vue.prototype.$API = API // 将包含所有接口请求函数的对象保存到Vue原型对象
@@ -14,7 +15,8 @@ Vue.prototype.$API = API // 将包含所有接口请求函数的对象保存到V
 Vue.config.productionTip = false
 
 // 注册全局组件
-Vue.component('TypeNav', TypeNav)
+// Vue.component('TypeNav', TypeNav)
+Vue.component(TypeNav.name, TypeNav)
 Vue.component('Carousel', Carousel)
 Vue.component('Pagination', Pagination)
 

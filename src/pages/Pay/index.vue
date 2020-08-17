@@ -110,6 +110,14 @@
         QRCode.toDataURL(this.payInfo.codeUrl)
           .then(url => {
             console.log(url)
+            this.$alert(`<img src="${url}"/>`, '请使用微信扫码支付', {
+              dangerouslyUseHTMLString: true, // 将内容字符串作为html解析
+              showClose: false, // 不显示右上角的关闭按钮
+              showCancelButton: true, // 显示取消按钮
+              cancelButtonText: '支付中遇到了问题',
+              confirmButtonText: '已支付',
+              center: true, // 水平居中显示
+            });
           })
           .catch(err => {
             alert('解决二维码失败!')

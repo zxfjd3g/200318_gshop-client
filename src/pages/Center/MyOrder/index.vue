@@ -74,11 +74,21 @@
     </div>
     <div class="choose-order">
       <Pagination
-        :currentPage="page"
+        :current-page="page"
         :total="total"
-        :pageSize="limit"
+        :page-size="limit"
         :showPageNo="7"
         @currentChange="getOrders"
+      />
+      <el-pagination
+        @current-change="getOrders"
+        :current-page="page"
+        :total="total"
+        :page-size="limit"
+        :pager-count="7"
+        layout="prev, pager, next, ->, total"
+        prev-text="上一页"
+        next-text="下一页"
       />
     </div>
   </div>
