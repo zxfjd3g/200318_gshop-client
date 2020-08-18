@@ -74,7 +74,7 @@
 
 ## 组件间通信高级4: $attrs与$listeners
     理解:
-        $attrs: 排除props声明, class, style的所有组件标签属性组成的对象
+        $attrs: 排除props声明, class, style的所有组件标签属性组成的对象   <A class="xxx" style="color: red"/>
         $listeners: 级组件标签绑定的所有自定义事件监听的对象
         v-bind: 的特别使用: <div v-bind="{ id: someProp, 'other-attr': otherProp }"></div>
         v-on: 的特别使用: <button v-on="{ mousedown: doThis, mouseup: doThat }"></button>
@@ -92,6 +92,7 @@
         @dblclick.native="add2"
             绑定的是原生的DOM事件监听, 最终是给组件的根标签<a>绑定的原生监听
             当双击a内部的<button>能响应, 因为事件有冒泡
+
 
 ## 组件间通信高级5: $children与$parent属性
     理解:

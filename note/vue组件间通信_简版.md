@@ -34,7 +34,8 @@
     1). 用来实现子组件向父组件通信
     2). 相关语法:
         父组件中绑定自定义事件监听:
-          <Child @eventName="callback">
+          <Child @eventName="callback" ref="child">
+		  this.$refs.child.$on('eventName', this.callback)
         子组件中分发事件
           this.$emit('eventName', data)
     应用: elment-ui的组件的事件监听语法都用的是自定义事件
@@ -134,7 +135,8 @@
     3). 编码:
         子组件:
             <slot :row="item" :$index="index">  <!-- slot的属性会自动传递给父组件 -->
-            </slot>
+        		默认内容   
+		 	</slot>
         父组件:
             <template slot-scope="{row, $index}">
                 <span>{{$index+1}}</span> &nbsp;&nbsp;
