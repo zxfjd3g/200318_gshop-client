@@ -2,10 +2,10 @@
     1). 组件间通信最基本方式: props
     2). 组件间通信高级1: vue自定义事件与事件总线
     3). 组件间通信高级2: v-model
-    4). 组件间通信高级3: .sync 属性修饰符
+    4). 组件间通信高级3: .sync
     5). 组件间通信高级4: $attrs与$listeners
-    6). 组件间通信高级5: $children与$parent
-	7). 组件间通信高级6: provide与inject
+    6). 组件间通信高级5: $ref & $children & $parent
+	7). 组件间通信高级6: provide & inject
     8). 组件间通信高级7: 作用域插槽slot-scope
     9). 组件间通信高级8: vuex
 
