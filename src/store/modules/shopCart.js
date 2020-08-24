@@ -15,6 +15,10 @@ const mutations = {
   */
   RECEIVE_CART_LIST (state, cartList){
     state.cartList = cartList
+  },
+
+  CHANGE_SKU_NUM (state, {item, changeNum}) {
+    item.skuNum += changeNum
   }
 }
 
@@ -101,6 +105,8 @@ const actions = {
   skuNum: 商品改变的数量
   */
   async addToCart ({commit}, {skuId, skuNum}) {   // dispatch('addToCart', {skuId, skuNum})
+
+
     const result = await reqAddToCart(skuId, skuNum)
     // if (result.code===200) { // 添加成功
     //     // 通知组件成功了

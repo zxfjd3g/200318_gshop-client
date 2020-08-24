@@ -85,6 +85,7 @@
 
 <script>
   import {mapGetters} from 'vuex'
+  import debounce from 'lodash/debounce'
   export default {
     name: 'ShopCart',
 
@@ -138,19 +139,24 @@
       更新购物项商品的数量
       changeNum: 改变的数量
       */
-      async updateSkuNum (item, changeNum, event) {
+      updateSkuNum:  debounce(async function (item, changeNum, event) {
 
         const {skuId, skuNum} = item
 
         // 只有当目标数量大于0时, 才处理, 否则不处理
         const targetNum = skuNum + changeNum
         if (targetNum>0) {
+          console.log('---1', item.skuNum, changeNum)
+          // item.skuNum += changeNum
+          this.$store.commit('CHANGE_SKU_NUM', {item, changeNum})
+          console.log('---2', item.skuNum, changeNum)
           try {
             // 分发一个异步action
             await this.$store.dispatch('addToCart', {skuId, skuNum: changeNum})
             // 异步请求操作成功了
-            this.$store.dispatch('getCartList')
+            // this.$store.dispatch('getCartList')
           } catch (error) { // 异步请求操作失败了
+            this.$store.commit('CHANGE_SKU_NUM', {item, changeNum: -changeNum})
             alert(error.message)
           }
         } else {
@@ -159,7 +165,7 @@
             event.target.value = item.skuNum
           }
         }
-      },
+      }, 500),
 
       /* 
       删除所有选中的购物项
