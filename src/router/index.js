@@ -65,7 +65,7 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       // 如果还没有登陆, 强制跳转到login
-      next('/login')
+      next('/login?redirect='+to.path)  // 携带目标路径的参数数据
     }
   } else { // 如果目标路径是不需要检查路径, 直接放行
     next()

@@ -93,7 +93,8 @@
         try {
           await this.$store.dispatch('login', {mobile, password})
           // 成功了, 跳转到首页(后面会优化)
-          this.$router.replace('/')
+          const redirect = this.$route.query.redirect
+          this.$router.replace(redirect || '/')
         } catch (error) {
           // 失败了, 提示
           alert(error.message)
